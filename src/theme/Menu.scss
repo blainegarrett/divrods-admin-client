@@ -1,0 +1,16 @@
+@import "./globals.scss";
+
+.iconMenu {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  .icon {
+    cursor: pointer;
+  }
+}
+
+.menuInner {
+  a {
+    color:var(--color-primary);
+  }
+}

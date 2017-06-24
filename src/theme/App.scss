@@ -1,0 +1,36 @@
+/*
+@import "../theme/theme";
+
+.appBar {
+    background-color: $panel-header-color;
+    box-shadow: none;
+    line-height: 52px;
+    height:50px;
+
+
+    .brand-logo {
+        font-size:25px;
+        color: #dfdfdf;
+        margin-left: 0px;
+        display: block;
+        float:left;
+        padding-left: 10px;
+        padding-right: 10px
+    }
+    .brand-logo.left {
+        position:relative;
+    }
+    .brand-logo:hover {
+        color: #fff;
+    }
+
+    ul li:hover, ul li.active {
+        background-color: #333;
+    }
+
+    .navbar-text {
+        margin-top:0px;
+        margin-bottom:0px;
+    }
+}
+*/

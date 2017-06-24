@@ -1,0 +1,4 @@
+// Consumable actions for preferences
+export const PREFERENCES_REQUEST = 'PREFERENCES_REQUEST';
+export const PREFERENCES_SUCCESS = 'PREFERENCES_SUCCESS';
+export const PREFERENCES_FAILURE = 'PREFERENCES_FAILURE';

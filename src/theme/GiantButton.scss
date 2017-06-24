@@ -1,0 +1,12 @@
+/* Default Styles For Giant Call To Action Button */
+@import "./globals.scss";
+
+.primary {
+    font-size:1.8rem;
+    height:4.5rem;
+    line-height: 4.5rem;
+    padding:0 2.5rem;
+    background-color:var(--color-primary) !important;
+    font-family: "Bryant", "Helvetica", "Arial", sans-serif;
+    font-weight:bold;
+}

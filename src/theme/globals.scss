@@ -1,0 +1,10 @@
+@import "./../../node_modules/react-toolbox/lib/colors.css";
+
+:root {
+    --color-primary: #039be5;
+}
+
+h1, h1 small, h2, h2 small, h3 small, h4 small, h5 small, h6 small {
+    font-family: "Bryant", "Helvetica", "Arial", sans-serif;
+    font-weight: 700;
+}

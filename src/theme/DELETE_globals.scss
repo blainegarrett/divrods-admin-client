@@ -1,0 +1,17 @@
+@import 'node_modules/react-toolbox/lib/commons.scss';
+
+
+$unit: 10px; /* This is due to react-toolbox assuming font-size: 62.5% which we're not doing. */
+
+$clickable-color: #039be5;
+
+$menu-text-color: #222;
+$button-primary-color: $clickable-color;
+
+body {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+h1, h1 small, h2, h2 small, h3 small, h4 small, h5 small, h6 small {
+    font-weight: 700;
+}
+

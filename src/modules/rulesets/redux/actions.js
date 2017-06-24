@@ -1,0 +1,14 @@
+// Consumable actions for preferences
+export const RULESETS_REQUEST = 'RULESETS_REQUEST';
+export const RULESETS_SUCCESS = 'RULESETS_SUCCESS';
+export const RULESETS_FAILURE = 'RULESETS_FAILURE';
+
+// Consumable actions for preferences
+export const RULES_REQUEST = 'RULES_REQUEST';
+export const RULES_SUCCESS = 'RULES_SUCCESS';
+export const RULES_FAILURE = 'RULES_FAILURE';
+
+// Command Actions
+export const GENERATE_RULESET_REQUEST = 'GENERATE_RULESET_REQUEST';
+export const GENERATE_RULESET_SUCCESS = 'GENERATE_RULESET_SUCCESS';
+export const GENERATE_RULESET_FAILURE = 'GENERATE_RULESET_FAILURE';

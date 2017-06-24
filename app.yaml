@@ -1,0 +1,52 @@
+application: divining-admin
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+
+skip_files: |
+   ^(.*/)?(
+   (app\.yaml)|
+   (app\.yml)|
+   (index\.yaml)|
+   (index\.yml)|
+   (#.*#)|
+   (.*~)|
+   (.*\.py[co])|
+   (.git/.*)|
+   (.gitignore)|
+   (.DS_Store)|
+   (^docs/.*)|
+   (^static/admin/js/react/src/.*)|
+   (^src/.*)|
+   (^node_modules/.*)|
+   (^external/PIL/.*)|
+   (^external/nose/.*)|
+   (^external/pip/.*)|
+   (^'external/easy_install\.*)|
+   (^external/mock\.*)|
+   (^external/nose_exclude.*)|
+   (^external/nosegae.*)|
+   (^external/rednose.*)|
+   (^external/yanc/.*)|
+   (^external/setuptools/.*)|
+   (^external/rsa/.*)|
+   )$
+
+handlers:
+- url: /favicon\.ico
+  static_files: www/assets/favicon.ico
+  upload: www/assets/favicon\.ico
+
+- url: /static
+  static_dir: static
+  secure: optional
+
+- url: /(.+)
+  static_files: www/index.html
+  upload: www/index.html
+
+- url: /
+  static_files: www/index.html
+  upload: www/index.html
