@@ -14,7 +14,7 @@ let defaultAuthState = {
 };
 
 if (false) { // TODO: Client Only
-  defaultAuthState.isAuthenticated = localStorage.getItem('id_token') ? true : false;
+  defaultAuthState.isAuthenticated = localStorage.getItem('access_token') ? true : false;
 }
 
 export function xAuthReducer(state = defaultAuthState, action) {
