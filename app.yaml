@@ -1,0 +1,37 @@
+application: divining-admin
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+skip_files: |
+   ^(.*/)?(
+   (app\.yaml)|
+   (app\.yml)|
+   (index\.yaml)|
+   (index\.yml)|
+   (#.*#)|
+   (.*~)|
+   (.*\.py[co])|
+   (.git/.*)|
+   (.gitignore)|
+   (.DS_Store)|
+   (^docs/.*)|
+   (^src/.*)|
+   (^node_modules/.*)|
+   )$
+
+handlers:
+- url: /static
+  static_dir: build/static
+  secure: always
+
+- url: /(.+)
+  static_files: build/index.html
+  upload: build/index.html
+  secure: always
+
+- url: /
+  static_files: build/index.html
+  upload: build/index.html
+  secure: always
