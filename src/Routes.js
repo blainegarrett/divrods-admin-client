@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+
+import {AuthUsersIndexPage} from './xauth/pages'
 import {SessionsIndexPage} from './modules/sessions';
 import {RulesetsIndexPage} from './modules/rulesets';
 import {ItemsIndexPage} from './modules/items';
@@ -17,6 +19,7 @@ export default class App extends Component {
         <Route exact path="/preferences" component={PreferencesIndexPage} />
         <Route exact path="/items" component={ItemsIndexPage} />
         <Route exact path="/sessions" component={SessionsIndexPage} />
+        <Route exact path="/auth/users" component={AuthUsersIndexPage} />
       </div>
     );
   }

@@ -6,7 +6,7 @@ class PreferencesIndexPage extends Component {
         return (
             <div>
                 <h2>Preferences</h2>
-                <p>Coming Soon</p>
+                <b>Coming Soon</b>
             </div>
         );
     }
