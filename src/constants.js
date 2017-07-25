@@ -1,0 +1,1 @@
+export const PREF_SERVICE_DOMAIN = 'localhost:9090';
