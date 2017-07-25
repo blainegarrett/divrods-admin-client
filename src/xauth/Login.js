@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Input from 'react-toolbox/lib/input';
-import Button from 'react-toolbox/lib/button/Button'
+import Button from 'react-toolbox/lib/button/Button';
 
 export default class Login extends Component {
 
@@ -26,8 +26,6 @@ export default class Login extends Component {
 
   render() {
     const { errorMessage } = this.props;
-
-    console.log(this.state);
 
     return (
       <section style={{width:'50%'}}>

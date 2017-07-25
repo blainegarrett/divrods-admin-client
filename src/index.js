@@ -2,7 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import store, { history } from './redux/store';
+import configureStore, { history } from './redux/store';
+import rootSaga from './redux/sagas';
 import ThemeProvider from 'react-toolbox/lib/ThemeProvider';
 import registerServiceWorker from './registerServiceWorker';
 import App from './containers/App';
@@ -15,6 +16,11 @@ import './assets/react-toolbox/theme.css';
 import Routes from './Routes';
 
 const target = document.querySelector('#root')
+const initialState = {};
+
+const store = configureStore(initialState)
+console.log(rootSaga);
+store.runSaga(rootSaga)
 
 render(
   <ThemeProvider theme={theme}>
