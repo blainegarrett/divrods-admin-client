@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
-import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
 import rootReducer from './rootReducer';
 import createSagaMiddleware, { END } from 'redux-saga';
@@ -10,7 +9,6 @@ export default function configureStore(initialState) {
   const history = createHistory();
   const sagaMiddleware = createSagaMiddleware()
 
-  const enhancers = [];
   const middleware = [
     //thunk,
     sagaMiddleware,
@@ -18,15 +16,14 @@ export default function configureStore(initialState) {
   ]
 
   // Redux Tools
-//  const composedEnhancers = compose(
-//    applyMiddleware(...middleware),
-//  );
+  const composedEnhancers = compose(
+    applyMiddleware(...middleware),
+  );
 
   const store = createStore(
     rootReducer,
     initialState,
-    compose(
-        applyMiddleware(sagaMiddleware ))
+    composedEnhancers
   );
 
   store.runSaga = sagaMiddleware.run

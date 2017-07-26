@@ -1,8 +1,6 @@
 // reducers.js
 
-import {
-  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS
-} from './actions'
+import { AUTHENTICATE, LOGOUT } from './actions'
 
 // The auth reducer. The starting state sets authentication
 // based on a token being in local storage. In a real app,
@@ -16,25 +14,25 @@ defaultAuthState.isAuthenticated = localStorage.getItem('access_token') ? true :
 
 export function authStateReducer(state = defaultAuthState, action) {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case AUTHENTICATE.REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
         isAuthenticated: false,
         user: action.creds
       })
-    case LOGIN_SUCCESS:
+    case AUTHENTICATE.SUCCESS:
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: true,
         errorMessage: ''
       })
-    case LOGIN_FAILURE:
+    case AUTHENTICATE.FAILURE:
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: false,
-        errorMessage: action.message
+        errorMessage: action.error
       })
-    case LOGOUT_SUCCESS:
+    case LOGOUT: // <-- this is dangerous. it isn't the success, just that they triggered the process...
       return Object.assign({}, state, {
         isFetching: true,
         isAuthenticated: false

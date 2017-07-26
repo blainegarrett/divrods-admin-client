@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Login from './Login';
 import { loginUser } from './actions';
-import { loadUserPage } from '../redux/actions';
-import Button from 'react-toolbox/lib/button/Button';
-
 
 export function loginRequired(level) {
   return function(PageComponent) {
@@ -23,9 +19,6 @@ export function loginRequired(level) {
           return (
             <div>
               <h1>Authentication Required</h1>
-
-              <Button onClick={() => this.props.loadUserPage('blainegarrett')} primary raised>ASDF</Button>
-
 
               <Login
                 errorMessage={errorMessage}
@@ -50,7 +43,6 @@ export function loginRequired(level) {
   function authMapDispatchToProps(dispatch) {
     return {
       dispatch:dispatch,
-      loadUserPage: bindActionCreators(loadUserPage, dispatch) // bindActionCreators !!!!
     }
   }
 

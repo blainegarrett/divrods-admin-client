@@ -19,7 +19,6 @@ const target = document.querySelector('#root')
 const initialState = {};
 
 const store = configureStore(initialState)
-console.log(rootSaga);
 store.runSaga(rootSaga)
 
 render(

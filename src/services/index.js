@@ -1,6 +1,5 @@
 
 import * as _api from './api'
-import { browserHistory } from 'react-router'
-
+import * as _pref_service_client from './pref_service_client';
 export const api = _api
-export const history = 99999; //browserHistory
+export const pref_service_client = _pref_service_client;

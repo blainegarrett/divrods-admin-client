@@ -1,14 +1,26 @@
 
+// Leftover Demo Stuff... Please Delete
 const REQUEST = 'REQUEST'
 const SUCCESS = 'SUCCESS'
 const FAILURE = 'FAILURE'
 
-function createRequestTypes(base) {
+export function createRequestTypes(base) {
+  // Helper to create Actions for async operations for easy access
+  // returns an object with props like {REQUEST: 'REQUEST', SUCCESS: 'SUCCESS', FAILURE: 'FAILURE'}
   return [REQUEST, SUCCESS, FAILURE].reduce((acc, type) => {
     acc[type] = `${base}_${type}`
     return acc
   }, {})
 }
+
+export function action(type, payload = {}) {
+  // Helper to construct a redux action
+  return {type, ...payload}
+}
+
+
+
+
 
 export const USER = createRequestTypes('USER')
 export const REPO = createRequestTypes('REPO')
@@ -23,11 +35,6 @@ export const LOAD_MORE_STARRED = 'LOAD_MORE_STARRED'
 export const LOAD_MORE_STARGAZERS = 'LOAD_MORE_STARGAZERS'
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
 
-
-function action(type, payload = {}) {
-  console.log('in action...');
-  return {type, ...payload}
-}
 
 export const user = {
   request: login => action(USER[REQUEST], {login}),

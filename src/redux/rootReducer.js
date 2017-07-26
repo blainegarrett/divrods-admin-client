@@ -2,7 +2,6 @@ import * as ActionTypes from './actions'
 import merge from 'lodash'
 import paginate from './reducers/paginate'
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
 import layoutReducers from './layout/reducers';
 import { authStateReducer } from '../xauth/reducers';
 
@@ -18,7 +17,6 @@ function router(state = { pathname: '/' }, action) {
 
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = { users: {}, repos: {} }, action) {
-  console.log(action);
   if (action.response && action.response.entities) {
     return merge({}, state, action.response.entities)
     }
@@ -26,6 +24,7 @@ function entities(state = { users: {}, repos: {} }, action) {
   return state
 }
 
+/*
 // Updates error message to notify about the failed fetches.
 function errorMessage(state = null, action) {
   const { type, error } = action
@@ -38,6 +37,7 @@ function errorMessage(state = null, action) {
 
   return state
 }
+*/
 
 // Updates the pagination data for different actions.
 const pagination = combineReducers({
