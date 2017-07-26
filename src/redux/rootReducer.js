@@ -4,8 +4,10 @@ import paginate from './reducers/paginate'
 import { combineReducers } from 'redux';
 import layoutReducers from './layout/reducers';
 import { authStateReducer } from '../xauth/reducers';
+import { routerReducer } from 'react-router-redux';
 
 
+/*
 function router(state = { pathname: '/' }, action) {
   switch (action.type) {
     case ActionTypes.UPDATE_ROUTER_STATE:
@@ -14,6 +16,7 @@ function router(state = { pathname: '/' }, action) {
       return state
   }
 }
+*/
 
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = { users: {}, repos: {} }, action) {
@@ -62,7 +65,25 @@ const pagination = combineReducers({
 export default combineReducers({
   entities,
   pagination,
-  router,
+  router: routerReducer,
   layout: layoutReducers,
   auth: authStateReducer
 });
+
+
+/*
+const history = createHistory()
+
+// Build the middleware for intercepting and dispatching navigation actions
+const middleware = routerMiddleware(history)
+
+// Add the reducer to your store on the `router` key
+// Also apply our middleware for navigating
+const store = createStore(
+  combineReducers({
+    ...reducers,
+    router: routerReducer
+  }),
+  applyMiddleware(middleware)
+)
+*/

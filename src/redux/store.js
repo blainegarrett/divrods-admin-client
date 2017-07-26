@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory';
 import rootReducer from './rootReducer';
@@ -10,20 +10,15 @@ export default function configureStore(initialState) {
   const sagaMiddleware = createSagaMiddleware()
 
   const middleware = [
-    //thunk,
     sagaMiddleware,
     routerMiddleware(history)
   ]
 
   // Redux Tools
-  const composedEnhancers = compose(
-    applyMiddleware(...middleware),
-  );
-
   const store = createStore(
     rootReducer,
     initialState,
-    composedEnhancers
+    applyMiddleware(...middleware)
   );
 
   store.runSaga = sagaMiddleware.run

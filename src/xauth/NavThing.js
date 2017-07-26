@@ -14,20 +14,7 @@ export default class NavThing extends Component {
       <nav className='navbar navbar-default'>
         <div className='container-fluid'>
           <div className='navbar-form'>
-
-            { /*}
-            {!isAuthenticated &&
-              <Login
-                errorMessage={errorMessage}
-                onLoginClick={ creds => dispatch(loginUser(creds)) }
-              />
-            }
-          */}
-
-            {isAuthenticated &&
-              <Logout onLogoutClick={() => dispatch(logoutUser())} />
-            }
-
+            {isAuthenticated && <Logout onLogoutClick={() => dispatch(logoutUser())} /> }
           </div>
         </div>
       </nav>
