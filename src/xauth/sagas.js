@@ -51,8 +51,8 @@ export function* watchAuthenticationSuccess() {
     const action = yield take(AUTHENTICATE.SUCCESS);
 
     // Set Local Storage
-    localStorage.setItem('id_token', action.response.id_token);
-    localStorage.setItem('access_token', action.response.access_token);
+    localStorage.setItem('id_token', action.response.results.id_token);
+    localStorage.setItem('access_token', action.response.results.access_token);
   }
 }
 

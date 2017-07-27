@@ -19,9 +19,49 @@ export function action(type, payload = {}) {
 }
 
 
+// ASYNC Actions
+export const PREFS = createRequestTypes('PREFS');
+export const RULESETS = createRequestTypes('RULESETS');
+export const RULES = createRequestTypes('RULESETS');
+export const USERS = createRequestTypes('USERS');
+
+// These are poorly named, but not sure what else to call them...
+export const prefs_async = {
+  request: login => action(PREFS[REQUEST], {login}),
+  success: (login, response) => action(PREFS[SUCCESS], {login, response}),
+  failure: (login, error) => action(PREFS[FAILURE], {login, error}),
+}
+
+export const rulesets_async = {
+  request: login => action(RULESETS[REQUEST], {login}),
+  success: (login, response) => action(RULESETS[SUCCESS], {login, response}),
+  failure: (login, error) => action(RULESETS[FAILURE], {login, error}),
+}
+
+
+export const rules_async = {
+  request: login => action(RULES[REQUEST], {login}),
+  success: (login, response) => action(RULES[SUCCESS], {login, response}),
+  failure: (login, error) => action(RULES[FAILURE], {login, error}),
+}
+
+
+export const users_async = {
+  request: login => action(USERS[REQUEST], {login}),
+  success: (login, response) => action(USERS[SUCCESS], {login, response}),
+  failure: (login, error) => action(USERS[FAILURE], {login, error}),
+}
 
 
 
+// Regular Actions
+export const LOAD_PREFS_PAGE = 'LOAD_PREFS_PAGE';
+export const LOAD_RULESETS_PAGE = 'LOAD_RULESETS_PAGE';
+export const LOAD_RULES_PAGE = 'LOAD_RULES_PAGE';
+export const LOAD_USERS_PAGE = 'LOAD_USERS_PAGE';
+
+
+// DELETE all of the below... it is leftover from the saga demo
 export const USER = createRequestTypes('USER')
 export const REPO = createRequestTypes('REPO')
 export const STARRED = createRequestTypes('STARRED')

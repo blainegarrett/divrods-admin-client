@@ -1,14 +1,17 @@
 /* eslint-disable no-constant-condition */
 import { take, put, call, fork, select, all } from 'redux-saga/effects';
-import { api } from '../services'
-import * as actions from './actions'
-import { getUser, getRepo, getStarredByUser, getStargazersByRepo } from './reducers/selectors';
+import { api } from '../services';
+import { pref_service_client } from '../services';
+import * as actions from './actions';
 
+
+import { getUser, getRepo, getStarredByUser, getStargazersByRepo } from './reducers/selectors';
 import { watchLogoutAction, watchLoginAction, watchAuthenticationSuccess } from '../xauth/sagas';
 
 
 // each entity defines 3 creators { request, success, failure }
-const { user, repo, starred, stargazers } = actions
+const { repo, starred, stargazers } = actions;
+const { user, prefs_async, rulesets_async, rules_async, users_async} = actions;
 
 // url for first page
 // urls for next pages will be extracted from the successive loadMore* requests
@@ -33,10 +36,39 @@ function* fetchEntity(entity, apiFn, id, url) {
 }
 
 // yeah! we can also bind Generators
-export const fetchUser       = fetchEntity.bind(null, user, api.fetchUser)
+
+// Rename this to something "authenticate"
+export const fetchUser         = fetchEntity.bind(null, user, api.fetchUser)
+export const fetchPrefs        = fetchEntity.bind(null, prefs_async, pref_service_client.fetchPrefs)
+export const fetchRulesets     = fetchEntity.bind(null, rulesets_async, pref_service_client.fetchRulesets)
+export const fetchRulesetRules = fetchEntity.bind(null, rules_async, pref_service_client.fetchRulesetRules)
+export const fetchUsers        = fetchEntity.bind(null, users_async, pref_service_client.fetchUsers)
+
+
+// Leftovers from sagas demo
 export const fetchRepo       = fetchEntity.bind(null, repo, api.fetchRepo)
 export const fetchStarred    = fetchEntity.bind(null, starred, api.fetchStarred)
 export const fetchStargazers = fetchEntity.bind(null, stargazers, api.fetchStargazers)
+
+//
+
+
+function* loadPrefs(next_cursor) {
+  yield call(fetchPrefs, next_cursor)
+}
+
+function* loadRulesets(login, requiredFields) {
+  yield call(fetchRulesets, login)
+}
+function* loadRulesetRules(login, requiredFields) {
+  yield call(fetchRulesetRules, login)
+}
+function* loadUsers(login, requiredFields) {
+  yield call(fetchUsers, login)
+}
+
+
+
 
 // load user unless it is cached
 function* loadUser(login, requiredFields) {
@@ -90,6 +122,21 @@ function* watchNavigate() {
 
 
 
+//
+
+
+
+
+
+// Fetches data for a User : user data + starred repos
+function* watchLoadPrefsPage() {
+  while(true) {
+    const {more, next_cursor} = yield take(actions.LOAD_PREFS_PAGE)
+    console.log('Let\'s load em');
+
+    yield fork(loadPrefs, next_cursor);
+  }
+}
 
 
 
@@ -129,6 +176,7 @@ function* watchLoadMoreStargazers() {
 
 export default function* root() {
   yield all([
+    fork(watchLoadPrefsPage),
     fork(watchAuthenticationSuccess),
     fork(watchLoginAction),
     fork(watchLogoutAction),

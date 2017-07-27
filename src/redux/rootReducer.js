@@ -20,9 +20,11 @@ function router(state = { pathname: '/' }, action) {
 
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = { users: {}, repos: {} }, action) {
-  if (action.response && action.response.entities) {
-    return merge({}, state, action.response.entities)
-    }
+  // TODO: This only works for our style of api...
+  if (action.response) { // is a list
+    let new_state = merge({}, state, action.response);
+    return new_state;
+  }
 
   return state
 }
@@ -44,12 +46,12 @@ function errorMessage(state = null, action) {
 
 // Updates the pagination data for different actions.
 const pagination = combineReducers({
-  starredByUser: paginate({
-    mapActionToKey: action => action.login,
+  prefs: paginate({
+    mapActionToKey: action => 'all',
     types: [
-      ActionTypes.STARRED.REQUEST,
-      ActionTypes.STARRED.SUCCESS,
-      ActionTypes.STARRED.FAILURE
+      ActionTypes.PREFS.REQUEST,
+      ActionTypes.PREFS.SUCCESS,
+      ActionTypes.PREFS.FAILURE
     ]
   }),
   stargazersByRepo: paginate({
