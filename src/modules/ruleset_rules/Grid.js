@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { action, LOAD_PREFS_PAGE } from '../../redux/actions';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
-import Tooltip from 'react-toolbox/lib/tooltip';
 import Avatar from 'react-toolbox/lib/avatar';
 import Chip from 'react-toolbox/lib/chip';
-import { Link } from 'react-router-dom';
-
-const TooltipCell = Tooltip(TableCell);
 
 
 function format_items(item_list) {
   return item_list.map(function(item, i) {
     const chunks = item.split(":");
     let pref_icon = 'thumb_up';
-    if (chunks[1] == '0') {
+    if (chunks[1] === '0') {
       pref_icon = 'thumb_down';
     }
 
     return (
       <Chip key={'chip' + i}>
         <Avatar icon={ pref_icon } />
-        <span><a href={'https://collections.artsmia.org/art/' + chunks[0] + '/'} target="_blank">{chunks[0]}</a></span>
+        <span><a href={'https://collections.artsmia.org/art/' + chunks[0] + '/'} rel="noopener noreferrer" target="_blank">{chunks[0]}</a></span>
       </Chip>
     )
   });

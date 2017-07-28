@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
+//import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { action, LOAD_PREFS_PAGE } from '../../redux/actions';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
-import Tooltip from 'react-toolbox/lib/tooltip';
-import Avatar from 'react-toolbox/lib/avatar';
-import { Link } from 'react-router-dom';
-
-const TooltipCell = Tooltip(TableCell);
 
 class Grid extends Component {
   render() {

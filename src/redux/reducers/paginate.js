@@ -1,7 +1,3 @@
-import _ from 'lodash'
-//import merge from 'lodash'
-//import union from 'lodash'
-
 // Creates a reducer managing pagination, given the action types to handle,
 // and a function telling how to extract the key from an action.
 export default function paginate({ types, mapActionToKey }) {
@@ -24,20 +20,17 @@ export default function paginate({ types, mapActionToKey }) {
     cursors: []
   }, action) {
 
-    console.log(action);
     switch (action.type) {
       case requestType:
         return Object.assign({}, state, {
           isFetching: true
         })
       case successType:
-
         const new_cursor_map = {};
 
-        console.log('!!!');
-        console.log(action.start_cursor);
-
-        new_cursor_map[action.start_cursor || 'start'] = Date.now();
+        // action.next_cursor is the cursor used for the request (i.e. start cursor)
+        // action.response.cursor is for the "next" request of data (if any)
+        new_cursor_map[action.next_cursor || 'start'] = Date.now();
         const jive = Object.assign({}, state, {
           isFetching: false,
           ids: state.ids.concat(action.response.results),
@@ -62,7 +55,6 @@ export default function paginate({ types, mapActionToKey }) {
       case successType:
       case failureType:
         const key = mapActionToKey(action)
-        console.log(key)
         if (typeof key !== 'string') {
           throw new Error('Expected key to be a string.')
         }

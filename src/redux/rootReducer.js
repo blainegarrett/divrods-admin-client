@@ -20,7 +20,6 @@ function router(state = { pathname: '/' }, action) {
 
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = { users: {}, repos: {} }, action) {
-  console.log(action)
   // TODO: This only works for our style of api...
   if (action.response) { // is a list
     let new_state = merge({}, state, action.response);

@@ -26,33 +26,15 @@ export const RULES = createRequestTypes('RULES');
 export const USERS = createRequestTypes('USERS');
 
 // These are poorly named, but not sure what else to call them...
-export const prefs_async = {
-  request: start_cursor => action(PREFS[REQUEST], {start_cursor}),
-  success: (start_cursor, response) => action(PREFS[SUCCESS], {start_cursor, response}),
-  failure: (start_cursor, error) => action(PREFS[FAILURE], {start_cursor, error}),
+export function async_call_mapper(actionGroup) {
+  // Helper to map return arguments from async calls to hydrated actions to be handled by pagination, etc
+  // actionGroup is a object created by createRequestTypes
+  return {
+    request: (async_args) => action(actionGroup[REQUEST], {...async_args}),
+    success: (response, async_args) => action(actionGroup[SUCCESS], {response, ...async_args}),
+    failure: (error, async_args) => action(actionGroup[FAILURE], {error, ...async_args}),
+  }
 }
-
-export const rulesets_async = {
-  request: start_cursor => action(RULESETS[REQUEST], {start_cursor}),
-  success: (start_cursor, response) => action(RULESETS[SUCCESS], {start_cursor, response}),
-  failure: (start_cursor, error) => action(RULESETS[FAILURE], {start_cursor, error}),
-}
-
-
-export const rules_async = {
-  request: function(ruleset_id, start_cursor) { console.log("success-start_cursor: " + start_cursor); return action(RULES[REQUEST], {ruleset_id, start_cursor})},
-  success: function(ruleset_id, response, start_cursor){ console.log("success-start_cursor: " + start_cursor);  return action(RULES[SUCCESS], {ruleset_id, start_cursor, response})},
-  failure: function(ruleset_id, start_cursor, error){ return action(RULES[FAILURE], {ruleset_id, start_cursor, error})},
-}
-
-
-export const users_async = {
-  request: start_cursor => action(USERS[REQUEST], {start_cursor}),
-  success: (start_cursor, response) => action(USERS[SUCCESS], {start_cursor, response}),
-  failure: (start_cursor, error) => action(USERS[FAILURE], {start_cursor, error}),
-}
-
-
 
 // Regular Actions
 export const LOAD_PREFS_PAGE = 'LOAD_PREFS_PAGE';
@@ -78,8 +60,8 @@ export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
 
 export const user = {
   request: login => action(USER[REQUEST], {login}),
-  success: (login, response) => action(USER[SUCCESS], {login, response}),
-  failure: (login, error) => action(USER[FAILURE], {login, error}),
+  success: (response, login) => action(USER[SUCCESS], {login, response}),
+  failure: (error, login) => action(USER[FAILURE], {login, error}),
 }
 
 export const repo = {
@@ -108,6 +90,7 @@ export const loadUserPage = function(login, requiredFields = []) {
   console.log(a);
   return a
 }
+
 export const loadRepoPage = (fullName, requiredFields = []) => action(LOAD_REPO_PAGE, {fullName, requiredFields})
 export const loadMoreStarred = login => action(LOAD_MORE_STARRED, {login})
 export const loadMoreStargazers = fullName => action(LOAD_MORE_STARGAZERS, {fullName})

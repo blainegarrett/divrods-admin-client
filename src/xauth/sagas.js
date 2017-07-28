@@ -62,5 +62,5 @@ export function* authenticate(data) {
   // TODO: Case out by auth provider
   const hash = window.btoa(data.username + ":" + data.password)
   const provider_data = {'auth_token': hash, 'auth_type': 'basic'};
-  yield call(fetchUser, provider_data);
+  yield call(fetchUser, {provider_data});
 }

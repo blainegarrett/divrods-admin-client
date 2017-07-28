@@ -8,12 +8,11 @@ import Button from 'react-toolbox/lib/button/Button';
 export default class Login extends Component {
 
   state = {
-      username : 'utility_user',
-      password : 'fYKp?$!69+berA7z@kv3uGS#VhEB5',
-    }
+    username : 'utility_user',
+    password : 'fYKp?$!69+berA7z@kv3uGS#VhEB5',
+  }
 
-  handleChange = (name, value) => {
-    console.log([name, value]);
+  handleFieldChange = (name, value) => {
     this.setState({...this.state, [name]: value});
   }
 
@@ -29,14 +28,15 @@ export default class Login extends Component {
 
     return (
       <section style={{width:'50%'}}>
-        <Input label='Username' type='text' ref='username' value={this.state.username} onChange={this.handleChange.bind(this, 'username')} className="form-control" placeholder='Username'/>
-        <Input label='Password' type='password' ref='password' value={this.state.password} onChange={this.handleChange.bind(this, 'password')} className="form-control" placeholder='Password'/>
+        <Input label='Username' type='text' ref='username' value={this.state.username} onChange={this.handleFieldChange.bind(this, 'username')} className="form-control" placeholder='Username'/>
+        <Input label='Password' type='password' ref='password' value={this.state.password} onChange={this.handleFieldChange.bind(this, 'password')} className="form-control" placeholder='Password'/>
+
         <Button onClick={this.submitHandler.bind(this)} primary raised>
           Login
         </Button>
 
         {errorMessage &&
-          <p>{errorMessage}</p>
+          <p>Error: {errorMessage}</p>
         }
       </section>
     )

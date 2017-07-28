@@ -1,4 +1,5 @@
 // Prefs service client wrapper
+// Note: If you need to talk to a different service, probably make a new service
 
 import 'isomorphic-fetch';
 import { PREF_SERVICE_DOMAIN } from '../constants';
@@ -46,26 +47,29 @@ function callApi(endpoint, params, data, method='GET') {
   //const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
   // Resolve the url
-  const is_https = window.location && window.location.protocol == 'https:';
+  //const is_https = window.location && window.location.protocol == 'https:';
   //const fullUrl = (is_https ? 'https://' : 'http://') + PREF_SERVICE_DOMAIN + endpoint;
-  const fullUrl = PREF_SERVICE_DOMAIN + endpoint + makeQueryString(params);
+  const baseUrl = PREF_SERVICE_DOMAIN + endpoint;
+  const fullUrl = baseUrl + makeQueryString(params);
 
   // Hash can be used to cache queries... not currently in use?
-  const hash = buildQueryParamHash(PREF_SERVICE_DOMAIN + endpoint, params)
+  const hash = buildQueryParamHash(baseUrl, params)
 
   // Determine headers
   let options = {method: method};
   options['headers'] = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
+  // If we are authenticated, attach the access_token
   const access_token = localStorage.getItem('access_token');
   if (access_token) {
     options['headers']['Authorization'] = 'Bearer ' + access_token;
   }
 
-  // Handle Body
-  if (method != 'GET')
+  // Handle Body/Payload - Note: GET, HEAD, DELETE do not accept payloads
+  if (method !== 'GET')
     options['body'] = JSON.stringify(data);
 
+  // Make request and call appropriate callbacks
   return fetch(fullUrl, options)
     .then(response =>
       response.json().then(json => ({ json, response }))
@@ -81,29 +85,26 @@ function callApi(endpoint, params, data, method='GET') {
     )
 }
 
+// Clean a cursor for use in the api - empty string is fine
+const cleanCursor = cursor => !cursor ? '' : cursor;
+
 // Rename this to something "authenticate"
-export function fetchUser(data) {
-  return callApi('/api/auth/authenticate', {}, data, 'POST');
+export function fetchUser({provider_data}) {
+  return callApi('/api/auth/authenticate', {}, provider_data, 'POST');
 }
 
-export function fetchPrefs(cursor = '') {
-  return callApi('/api/rest/v1.0/preferences', {cursor, verbose:true, limit:5}, {}, 'GET');
+export function fetchPrefs({next_cursor = ''}) {
+  return callApi('/api/rest/v1.0/preferences', {cursor: cleanCursor(next_cursor), verbose:true, limit:5}, {}, 'GET');
 }
 
-export function fetchRulesets(cursor = '') {
-  return callApi('/api/rest/v1.0/rulesets', {cursor, verbose:true, limit:5}, {}, 'GET');
+export function fetchRulesets({next_cursor = ''}) {
+  return callApi('/api/rest/v1.0/rulesets', {cursor: cleanCursor(next_cursor), verbose:true, limit:5}, {}, 'GET');
 }
 
-export function fetchRulesetRules(ruleset_id, cursor = '') {
-
-  console.log('===============fetchRulesetRules arguments:')
-  console.log([ruleset_id, cursor])
-  return callApi('/api/rest/v1.0/recommendations', {ruleset_id: ruleset_id, cursor: cursor, verbose:true, limit:50}, {}, 'GET');
+export function fetchRulesetRules({ruleset_id, next_cursor = ''}) {
+  return callApi('/api/rest/v1.0/recommendations', {ruleset_id: ruleset_id, cursor: cleanCursor(next_cursor), verbose:true, limit:50}, {}, 'GET');
 }
 
-export function fetchUsers(cursor = '') {
-  return callApi('/api/auth/users', {cursor, verbose:true, limit:5}, {}, 'GET');
+export function fetchUsers({next_cursor = ''}) {
+  return callApi('/api/auth/users', {cursor: cleanCursor(next_cursor), verbose:true, limit:5}, {}, 'GET');
 }
-
-
-//export const fetchUser = login => callApi(`users/${login}`, userSchema)
