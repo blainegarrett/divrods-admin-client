@@ -20,6 +20,7 @@ function router(state = { pathname: '/' }, action) {
 
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = { users: {}, repos: {} }, action) {
+  console.log(action)
   // TODO: This only works for our style of api...
   if (action.response) { // is a list
     let new_state = merge({}, state, action.response);
@@ -54,12 +55,28 @@ const pagination = combineReducers({
       ActionTypes.PREFS.FAILURE
     ]
   }),
-  stargazersByRepo: paginate({
-    mapActionToKey: action => action.fullName,
+  rulesets: paginate({
+    mapActionToKey: action => 'all',
     types: [
-      ActionTypes.STARGAZERS.REQUEST,
-      ActionTypes.STARGAZERS.SUCCESS,
-      ActionTypes.STARGAZERS.FAILURE
+      ActionTypes.RULESETS.REQUEST,
+      ActionTypes.RULESETS.SUCCESS,
+      ActionTypes.RULESETS.FAILURE
+    ]
+  }),
+  ruleset_rules: paginate({
+    mapActionToKey: action => action.ruleset_id,
+    types: [
+      ActionTypes.RULES.REQUEST,
+      ActionTypes.RULES.SUCCESS,
+      ActionTypes.RULES.FAILURE
+    ]
+  }),
+  auth_users: paginate({
+    mapActionToKey: action => 'all',
+    types: [
+      ActionTypes.USERS.REQUEST,
+      ActionTypes.USERS.SUCCESS,
+      ActionTypes.USERS.FAILURE
     ]
   })
 })

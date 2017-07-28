@@ -22,34 +22,34 @@ export function action(type, payload = {}) {
 // ASYNC Actions
 export const PREFS = createRequestTypes('PREFS');
 export const RULESETS = createRequestTypes('RULESETS');
-export const RULES = createRequestTypes('RULESETS');
+export const RULES = createRequestTypes('RULES');
 export const USERS = createRequestTypes('USERS');
 
 // These are poorly named, but not sure what else to call them...
 export const prefs_async = {
-  request: login => action(PREFS[REQUEST], {login}),
-  success: (login, response) => action(PREFS[SUCCESS], {login, response}),
-  failure: (login, error) => action(PREFS[FAILURE], {login, error}),
+  request: start_cursor => action(PREFS[REQUEST], {start_cursor}),
+  success: (start_cursor, response) => action(PREFS[SUCCESS], {start_cursor, response}),
+  failure: (start_cursor, error) => action(PREFS[FAILURE], {start_cursor, error}),
 }
 
 export const rulesets_async = {
-  request: login => action(RULESETS[REQUEST], {login}),
-  success: (login, response) => action(RULESETS[SUCCESS], {login, response}),
-  failure: (login, error) => action(RULESETS[FAILURE], {login, error}),
+  request: start_cursor => action(RULESETS[REQUEST], {start_cursor}),
+  success: (start_cursor, response) => action(RULESETS[SUCCESS], {start_cursor, response}),
+  failure: (start_cursor, error) => action(RULESETS[FAILURE], {start_cursor, error}),
 }
 
 
 export const rules_async = {
-  request: login => action(RULES[REQUEST], {login}),
-  success: (login, response) => action(RULES[SUCCESS], {login, response}),
-  failure: (login, error) => action(RULES[FAILURE], {login, error}),
+  request: function(ruleset_id, start_cursor) { console.log("success-start_cursor: " + start_cursor); return action(RULES[REQUEST], {ruleset_id, start_cursor})},
+  success: function(ruleset_id, response, start_cursor){ console.log("success-start_cursor: " + start_cursor);  return action(RULES[SUCCESS], {ruleset_id, start_cursor, response})},
+  failure: function(ruleset_id, start_cursor, error){ return action(RULES[FAILURE], {ruleset_id, start_cursor, error})},
 }
 
 
 export const users_async = {
-  request: login => action(USERS[REQUEST], {login}),
-  success: (login, response) => action(USERS[SUCCESS], {login, response}),
-  failure: (login, error) => action(USERS[FAILURE], {login, error}),
+  request: start_cursor => action(USERS[REQUEST], {start_cursor}),
+  success: (start_cursor, response) => action(USERS[SUCCESS], {start_cursor, response}),
+  failure: (start_cursor, error) => action(USERS[FAILURE], {start_cursor, error}),
 }
 
 

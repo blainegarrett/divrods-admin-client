@@ -27,12 +27,16 @@ const firstPageStargazersUrl = fullName => `repos/${fullName}/stargazers`
 // id     : login | fullName
 // url    : next page url. If not provided will use pass id to apiFn
 function* fetchEntity(entity, apiFn, id, url) {
+
+  console.log([entity, apiFn, id, url]);
+
   yield put( entity.request(id) )
-  const {response, error} = yield call(apiFn, url || id)
+  const results = yield call(apiFn, id, url || '') //, url || id)
+  const {response, error} = results;
   if(response)
-    yield put( entity.success(id, response) )
+    yield put( entity.success(id, response, url) )
   else
-    yield put( entity.failure(id, error) )
+    yield put( entity.failure(id, error, url) )
 }
 
 // yeah! we can also bind Generators
@@ -52,19 +56,50 @@ export const fetchStargazers = fetchEntity.bind(null, stargazers, api.fetchStarg
 
 //
 
+function jive(state, index_name, index_subname, next_cursor) {
+
+  console.log([index_name, index_subname, next_cursor]);
+
+  const next_cursor_index = next_cursor || 'start';
+  if (state.pagination[index_name] &&
+      state.pagination[index_name][index_subname] &&
+      state.pagination[index_name][index_subname].cursors[next_cursor_index]) {
+
+    console.log("shit is loaded mother fucker!!!!!!!!");
+    return true;
+  }
+    console.log("shit was def not loaded already...");
+  return false;
+}
 
 function* loadPrefs(next_cursor) {
-  yield call(fetchPrefs, next_cursor)
+  // TODO: Check to see if we have data for this cursor
+  const loaded = yield select(jive, "prefs", "all", next_cursor)
+  if (!loaded) {
+    yield call(fetchPrefs, next_cursor);
+  }
 }
 
-function* loadRulesets(login, requiredFields) {
-  yield call(fetchRulesets, login)
+function* loadRulesets(next_cursor) {
+  // TODO: Check to see if we have data for this cursor
+  const loaded = yield select(jive, "rulesets", "all", next_cursor)
+  if (!loaded) {
+    yield call(fetchRulesets, next_cursor);
+  }
 }
-function* loadRulesetRules(login, requiredFields) {
-  yield call(fetchRulesetRules, login)
+function* loadRulesetRules(ruleset_id, next_cursor) {
+  // TODO: Check to see if we have data for this cursor
+  const loaded = yield select(jive, "ruleset_rules", ruleset_id, next_cursor)
+  if (!loaded) {
+    yield call(fetchRulesetRules, ruleset_id, next_cursor);
+  }
 }
-function* loadUsers(login, requiredFields) {
-  yield call(fetchUsers, login)
+function* loadUsers(next_cursor) {
+   // TODO: Check to see if we have data for this cursor
+  const loaded = yield select(jive, "auth_users", "all", next_cursor)
+  if (!loaded) {
+    yield call(fetchUsers, next_cursor);
+  }
 }
 
 
@@ -111,32 +146,34 @@ function* loadStargazers(fullName, loadMore) {
 /******************************* WATCHERS *************************************/
 /******************************************************************************/
 
-// trigger router navigation via history
-function* watchNavigate() {
-  //while(true) {
-  //  const {pathname} = yield take(actions.NAVIGATE)
-  //  yield history.push(pathname)
-  //}
-}
-
-
-
-
-//
-
-
-
-
-
-// Fetches data for a User : user data + starred repos
 function* watchLoadPrefsPage() {
   while(true) {
-    const {more, next_cursor} = yield take(actions.LOAD_PREFS_PAGE)
-    console.log('Let\'s load em');
-
+    const {next_cursor} = yield take(actions.LOAD_PREFS_PAGE);
     yield fork(loadPrefs, next_cursor);
   }
 }
+
+function* watchLoadRulesetsPage() {
+  while(true) {
+    const {next_cursor} = yield take(actions.LOAD_RULESETS_PAGE);
+    yield fork(loadRulesets, next_cursor);
+  }
+}
+
+function* watchLoadRulesetRulesPage() {
+  while(true) {
+    const {next_cursor, ruleset_id} = yield take(actions.LOAD_RULES_PAGE);
+    yield fork(loadRulesetRules, ruleset_id, next_cursor);
+  }
+}
+
+function* watchLoadAuthUsersPage() {
+  while(true) {
+    const {more, next_cursor} = yield take(actions.LOAD_USERS_PAGE);
+    yield fork(loadUsers, next_cursor);
+  }
+}
+
 
 
 
@@ -177,13 +214,11 @@ function* watchLoadMoreStargazers() {
 export default function* root() {
   yield all([
     fork(watchLoadPrefsPage),
+    fork(watchLoadRulesetsPage),
+    fork(watchLoadRulesetRulesPage),
+    fork(watchLoadAuthUsersPage),
     fork(watchAuthenticationSuccess),
     fork(watchLoginAction),
     fork(watchLogoutAction),
-    fork(watchNavigate),
-    fork(watchLoadUserPage),
-    fork(watchLoadRepoPage),
-    fork(watchLoadMoreStarred),
-    fork(watchLoadMoreStargazers)
   ])
 }

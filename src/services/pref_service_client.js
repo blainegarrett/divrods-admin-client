@@ -90,16 +90,19 @@ export function fetchPrefs(cursor = '') {
   return callApi('/api/rest/v1.0/preferences', {cursor, verbose:true, limit:5}, {}, 'GET');
 }
 
-export function fetchRulesets(cursor) {
-  return callApi('/api/rest/v1.0/auth/rulesets', {cursor, verbose:true}, {}, 'GET');
+export function fetchRulesets(cursor = '') {
+  return callApi('/api/rest/v1.0/rulesets', {cursor, verbose:true, limit:5}, {}, 'GET');
 }
 
-export function fetchRulesetRules(ruleset_id, cursor) {
-  return callApi('/api/rest/v1.0/auth/rulesets/' + ruleset_id, {cursor, verbose:true}, {}, 'GET');
+export function fetchRulesetRules(ruleset_id, cursor = '') {
+
+  console.log('===============fetchRulesetRules arguments:')
+  console.log([ruleset_id, cursor])
+  return callApi('/api/rest/v1.0/recommendations', {ruleset_id: ruleset_id, cursor: cursor, verbose:true, limit:50}, {}, 'GET');
 }
 
-export function fetchUsers(cursor) {
-  return callApi('/api/auth/users', {cursor, verbose:true}, {}, 'GET');
+export function fetchUsers(cursor = '') {
+  return callApi('/api/auth/users', {cursor, verbose:true, limit:5}, {}, 'GET');
 }
 
 
