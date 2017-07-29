@@ -48,3 +48,7 @@ export const user = {
   success: (response, login) => action(USER[SUCCESS], {login, response}),
   failure: (error, login) => action(USER[FAILURE], {login, error}),
 }
+
+
+// Maybe move this to layout
+export const RESET_GLOBAL_ERROR_MESSAGE = 'RESET_GLOBAL_ERROR_MESSAGE';

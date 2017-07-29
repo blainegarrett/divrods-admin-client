@@ -27,17 +27,21 @@ export default class Login extends Component {
     const { errorMessage } = this.props;
 
     return (
-      <section style={{width:'50%'}}>
-        <Input label='Username' type='text' ref='username' value={this.state.username} onChange={this.handleFieldChange.bind(this, 'username')} className="form-control" placeholder='Username'/>
-        <Input label='Password' type='password' ref='password' value={this.state.password} onChange={this.handleFieldChange.bind(this, 'password')} className="form-control" placeholder='Password'/>
+      <section>
+        <div>
+          <div>
+            <Input label='Username' type='text' ref='username' value={this.state.username} onChange={this.handleFieldChange.bind(this, 'username')} className="form-control" placeholder='Username'/>
+            <Input label='Password' type='password' ref='password' value={this.state.password} onChange={this.handleFieldChange.bind(this, 'password')} className="form-control" placeholder='Password'/>
 
-        <Button onClick={this.submitHandler.bind(this)} primary raised>
-          Login
-        </Button>
+            <Button onClick={this.submitHandler.bind(this)} primary raised>
+              Login
+            </Button>
 
-        {errorMessage &&
-          <p>Error: {errorMessage}</p>
-        }
+            {errorMessage &&
+              <p>Error: {errorMessage}</p>
+            }
+          </div>
+        </div>
       </section>
     )
   }
