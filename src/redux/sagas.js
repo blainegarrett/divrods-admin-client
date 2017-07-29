@@ -1,16 +1,9 @@
 /* eslint-disable no-constant-condition */
 import { take, put, call, fork, select, all } from 'redux-saga/effects';
-import { api } from '../services';
 import { pref_service_client } from '../services';
 import * as actions from './actions';
 
 import { watchLogoutAction, watchLoginAction, watchAuthenticationSuccess } from '../xauth/sagas';
-
-
-// each entity defines 3 creators { request, success, failure }
-//const { repo, starred, stargazers } = actions;
-//const { user, prefs_async, rulesets_async, rules_async, users_async} = actions;
-
 
 /***************************** Subroutines ************************************/
 
@@ -22,16 +15,14 @@ function* fetchEntity(asyncActionMap, apiFn, ...args) {
   yield put( asyncActionMap.request(...args))
   const results = yield call(apiFn, ...args)
   const {response, error} = results;
+
   if(response)
     yield put( asyncActionMap.success(response, ...args) )
   else
     yield put( asyncActionMap.failure(error, ...args) )
 }
 
-// yeah! we can also bind Generators
-
-// Rename this to something "authenticate"
-export const fetchUser         = fetchEntity.bind(null, actions.async_call_mapper(actions.USER), api.fetchUser)
+// Bind Generators - TODO: Document the crap out of this
 export const fetchPrefs        = fetchEntity.bind(null, actions.async_call_mapper(actions.PREFS), pref_service_client.fetchPrefs)
 export const fetchRulesets     = fetchEntity.bind(null, actions.async_call_mapper(actions.RULESETS), pref_service_client.fetchRulesets)
 export const fetchRulesetRules = fetchEntity.bind(null, actions.async_call_mapper(actions.RULES), pref_service_client.fetchRulesetRules)
@@ -39,9 +30,6 @@ export const fetchUsers        = fetchEntity.bind(null, actions.async_call_mappe
 
 
 function jive(state, index_name, index_subname, next_cursor) {
-
-  //console.log([index_name, index_subname, next_cursor]);
-
   const next_cursor_index = next_cursor || 'start';
   if (state.pagination[index_name] &&
       state.pagination[index_name][index_subname] &&

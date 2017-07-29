@@ -19,7 +19,7 @@ function* fetchEntity(entity, apiFn, id, url) {
 export const fetchUser = fetchEntity.bind(null, user, pref_service_client.fetchUser)
 
 
-// Fetches data for a User : user data + starred repos
+// Watch for Logout attempt
 export function* watchLogoutAction() {
   while(true) {
     yield take(LOGOUT); // return value is {type:LOGOUT}
@@ -31,22 +31,16 @@ export function* watchLogoutAction() {
 }
 
 export function* watchLoginAction() {
+  // Watch for login attempts (i.e. submitting login form)
   while(true) {
     const action = yield take(LOGIN);
-    // TODO: This only works for username/pw combos
-    //const username = action.username;
-    //const password = action.password;
-    //console.log([username, password]);
-
     yield fork(authenticate, action);
-
-    // TODO: Send log that the user logged out to server (?)
-    // fork(recordLogoutAudit)
-    // TODO: Redirect to /
   }
 }
 
 export function* watchAuthenticationSuccess() {
+  // Watch for successful login attempt and update credentials
+
   while(true) {
     const action = yield take(AUTHENTICATE.SUCCESS);
 
@@ -55,8 +49,6 @@ export function* watchAuthenticationSuccess() {
     localStorage.setItem('access_token', action.response.results.access_token);
   }
 }
-
-
 
 export function* authenticate(data) {
   // TODO: Case out by auth provider
