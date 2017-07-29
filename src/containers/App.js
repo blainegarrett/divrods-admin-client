@@ -24,7 +24,7 @@ class App extends Component {
       const { routes, authState, logoutUser, layoutState } = this.props;
         return (
             <Layout>
-              <div style={{ flex: 1, overflowY: 'auto', padding: '4.0rem 2.0rem' }}>
+              <div style={{ minHeight:'100%', flex: 1, overflowY: 'auto', padding: '4.0rem 2.0rem', backgroundSize:'cover', backgroundPosition:'center center', backgroundAttachment:'fixed', backgroundImage:'url(https://lorempixel.com/output/people-q-c-1920-1920-5.jpg)', filter:'blur(12px)' }}>
                 <MainMenu
                   active={layoutState.mainMenu.active}
                   pinned={layoutState.mainMenu.pinned}

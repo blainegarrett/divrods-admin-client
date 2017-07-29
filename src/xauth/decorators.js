@@ -22,8 +22,6 @@ export function loginRequired(level) {
           // TODO: Somehow inform the server to fire off a 401, 403, etc
           return (
             <div>
-              <h1>Authentication Required</h1>
-
               <Login
                 errorMessage={errorMessage}
                 onLoginClick={ creds => dispatch(loginUser(creds)) }

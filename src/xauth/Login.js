@@ -27,13 +27,13 @@ export default class Login extends Component {
     const { errorMessage } = this.props;
 
     return (
-      <section>
-        <div>
-          <div>
+      <section style={{marginTop:'10%', width:'40%', marginRight:'auto', marginLeft:'auto',position:'static'}}>
+        <div style={{backgroundColor:'#fff', position:'relative', height:'300px', border: '1px solid #8a8a8a'}}>
+          <div style={{ margin: '40px auto 56px', 'width': '75%', 'display': 'block'}}>
             <Input label='Username' type='text' ref='username' value={this.state.username} onChange={this.handleFieldChange.bind(this, 'username')} className="form-control" placeholder='Username'/>
             <Input label='Password' type='password' ref='password' value={this.state.password} onChange={this.handleFieldChange.bind(this, 'password')} className="form-control" placeholder='Password'/>
 
-            <Button onClick={this.submitHandler.bind(this)} primary raised>
+            <Button style={{width:'100%'}} onClick={this.submitHandler.bind(this)} primary raised>
               Login
             </Button>
 
