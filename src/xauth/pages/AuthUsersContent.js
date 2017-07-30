@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { action, LOAD_USERS_PAGE } from '../../redux/actions';
+import { action } from '../../redux/actions';
+import { LOAD_USERS_PAGE } from '../../xauth/actions'
 import Button from 'react-toolbox/lib/button/Button';
+import UsersActionToolbar from './UsersActionToolbar';
 import Grid from './Grid';
 
 class AuthUsersContent extends Component {
@@ -14,6 +16,7 @@ class AuthUsersContent extends Component {
     let more = this.props.more;
     return (
       <div>
+        <UsersActionToolbar />
         <Grid entities={this.props.entities} />
         { more && (<div style={{textAlign:'center', paddingTop:'20px'}}><Button onClick={() => this.props.loadRulesetData(next_cursor) } primary raised>Load More</Button></div>) }
       </div>

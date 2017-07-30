@@ -2,8 +2,9 @@ import * as ActionTypes from './actions';
 import paginate from './reducers/paginate';
 import { combineReducers } from 'redux';
 import layoutReducers from './layout/reducers';
-import { authStateReducer } from '../xauth/reducers';
+import { authStateReducer, createUserFormState } from '../xauth/reducers';
 import { routerReducer } from 'react-router-redux';
+import { USERS } from '../xauth/actions';
 
 
 // This is a simple entty cache that supports data like {resource_id: guid, ...}
@@ -79,9 +80,9 @@ const pagination = combineReducers({
   auth_users: paginate({
     mapActionToKey: action => 'all',
     types: [
-      ActionTypes.USERS.REQUEST,
-      ActionTypes.USERS.SUCCESS,
-      ActionTypes.USERS.FAILURE
+      USERS.REQUEST,
+      USERS.SUCCESS,
+      USERS.FAILURE
     ]
   })
 })
@@ -92,7 +93,8 @@ export default combineReducers({
   globalErrorMessage,
   router: routerReducer,
   layout: layoutReducers,
-  auth: authStateReducer
+  auth: authStateReducer,
+  createUserFormState
 });
 
 

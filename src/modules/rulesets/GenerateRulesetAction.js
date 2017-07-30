@@ -74,7 +74,7 @@ class GenerateRulesetAction extends Component {
               <label>Min Support</label>
               <Slider step={.01} min={0} max={1} editable value={this.state.min_support} onChange={this.handleChange.bind(this, 'min_support')} />
 
-              <p>Min Confidence</p>
+              <label>Min Confidence</label>
               <Slider step={.01} min={0} max={1} editable value={this.state.min_confidence} onChange={this.handleChange.bind(this, 'min_confidence')} />
 
               <p>Make Default on Success</p>

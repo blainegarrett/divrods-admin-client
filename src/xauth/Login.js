@@ -30,8 +30,9 @@ export default class Login extends Component {
       <section>
         <div>
           <div>
-            <Input label='Username' type='text' ref='username' value={this.state.username} onChange={this.handleFieldChange.bind(this, 'username')} className="form-control" placeholder='Username'/>
-            <Input label='Password' type='password' ref='password' value={this.state.password} onChange={this.handleFieldChange.bind(this, 'password')} className="form-control" placeholder='Password'/>
+
+            <Input label='Username' type='text' ref='username' value={this.state.username} onChange={this.handleFieldChange.bind(this, 'username')} className="form-control" placeholder='Username' autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
+            <Input label='Password' type='password' ref='password' value={this.state.password} onChange={this.handleFieldChange.bind(this, 'password')} className="form-control" placeholder='Password' autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
 
             <Button onClick={this.submitHandler.bind(this)} primary raised>
               Login

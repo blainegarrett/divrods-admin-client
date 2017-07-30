@@ -3,7 +3,7 @@ import { take, put, call, fork, select, all } from 'redux-saga/effects';
 import { pref_service_client } from '../services';
 import * as actions from './actions';
 
-import { watchLogoutAction, watchLoginAction, watchAuthenticationSuccess } from '../xauth/sagas';
+import { watchLoadAuthUsersPage, watchCreateUserSuccess, watchInitiateCreateUserAction, watchLogoutAction, watchLoginAction, watchAuthenticationSuccess } from '../xauth/sagas';
 
 /***************************** Subroutines ************************************/
 
@@ -11,7 +11,7 @@ import { watchLogoutAction, watchLoginAction, watchAuthenticationSuccess } from 
 // entity : asyncActionMap - eg.result of actions.async_call_mapper(actions.USER)
 // apiFn  : supporting api method eg. pref_service_client.fetchPrefs
 // args   : object of arguments passed to the generator on to the apiFn and ultimatly to action
-function* fetchEntity(asyncActionMap, apiFn, ...args) {
+export function* fetchEntity(asyncActionMap, apiFn, ...args) {
   if (!apiFn || typeof apiFn !== 'function') {
     throw new Error('api function is undefined or not of type function.')
   }
@@ -30,11 +30,11 @@ function* fetchEntity(asyncActionMap, apiFn, ...args) {
 export const fetchPrefs        = fetchEntity.bind(null, actions.async_call_mapper(actions.PREFS), pref_service_client.fetchPrefs)
 export const fetchRulesets     = fetchEntity.bind(null, actions.async_call_mapper(actions.RULESETS), pref_service_client.fetchRulesets)
 export const fetchRulesetRules = fetchEntity.bind(null, actions.async_call_mapper(actions.RULES), pref_service_client.fetchRulesetRules)
-export const fetchUsers        = fetchEntity.bind(null, actions.async_call_mapper(actions.USERS), pref_service_client.fetchUsers)
+
 
 export const generateRuleset   = fetchEntity.bind(null, actions.async_call_mapper(actions.GENERATE_RULESET), pref_service_client.generateRuleset)
 
-function jive(state, index_name, index_subname, next_cursor, force_refresh=false) {
+export function jive(state, index_name, index_subname, next_cursor, force_refresh=false) {
   // TODO: This works for pagination, but not for individual entities...
 
   if (force_refresh) {
@@ -73,13 +73,7 @@ function* loadRulesetRules(ruleset_id, next_cursor, force_refresh=false) {
   }
 }
 
-function* loadUsers(next_cursor, force_refresh=false) {
-   // TODO: Check to see if we have data for this cursor
-  const loaded = yield select(jive, "auth_users", "all", next_cursor, force_refresh)
-  if (!loaded) {
-    yield call(fetchUsers, {next_cursor});
-  }
-}
+
 
 
 /******************************************************************************/
@@ -107,13 +101,6 @@ function* watchLoadRulesetRulesPage() {
   }
 }
 
-function* watchLoadAuthUsersPage() {
-  while(true) {
-    const {next_cursor} = yield take(actions.LOAD_USERS_PAGE);
-    yield fork(loadUsers, next_cursor);
-  }
-}
-
 
 function* watchInitiateGenerateRulesAction() {
   while(true) {
@@ -136,7 +123,8 @@ export default function* root() {
   yield all([
     fork(watchInitiateGenerateRulesAction),
     fork(watchGenerateRulesActionSuccess),
-
+    fork(watchInitiateCreateUserAction),
+    fork(watchCreateUserSuccess),
     fork(watchLoadPrefsPage),
     fork(watchLoadRulesetsPage),
     fork(watchLoadRulesetRulesPage),

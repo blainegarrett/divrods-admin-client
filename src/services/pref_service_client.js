@@ -106,9 +106,16 @@ export function fetchRulesetRules({ruleset_id, next_cursor = ''}) {
 }
 
 export function fetchUsers({next_cursor = ''}) {
-  return callApi('/api/auth/users', {cursor: cleanCursor(next_cursor), verbose:true, limit:5}, {}, 'GET');
+  return callApi('/api/auth/users', {cursor: cleanCursor(next_cursor), verbose:true, limit:50}, {}, 'GET');
 }
 
 export function generateRuleset({min_support, min_confidence, make_default}) {
   return callApi('/api/rest/v1.0/rulesets', {min_support, min_confidence, make_default, verbose:true}, {}, 'POST')
+}
+
+export function createUser({username, first_name, last_name, email}) {
+  return callApi('/api/auth/users', {verbose:true}, {username, first_name, last_name, email}, 'POST')
+}
+export function setPassword({user_resource_id, password}) {
+  return callApi('/api/auth/users/' + user_resource_id + '/logins', {verbose:true}, {'auth_key': 'ignored_on_create?', 'auth_type': 'basic', 'auth_data': password}, 'POST')
 }
