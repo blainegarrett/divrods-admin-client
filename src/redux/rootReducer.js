@@ -1,35 +1,42 @@
-import * as ActionTypes from './actions'
-import merge from 'lodash'
-import paginate from './reducers/paginate'
+import * as ActionTypes from './actions';
+import paginate from './reducers/paginate';
 import { combineReducers } from 'redux';
 import layoutReducers from './layout/reducers';
 import { authStateReducer } from '../xauth/reducers';
 import { routerReducer } from 'react-router-redux';
 
 
-/*
-function router(state = { pathname: '/' }, action) {
-  switch (action.type) {
-    case ActionTypes.UPDATE_ROUTER_STATE:
-      return action.state
-    default:
-      return state
-  }
-}
-*/
+// This is a simple entty cache that supports data like {resource_id: guid, ...}
+// Currently, don't check it, but this should be the source of "truth" for an entity
+// Note: This only works with
 
-// Updates an entity cache in response to any action with response.entities.
-function entities(state = { users: {}, repos: {} }, action) {
+function entities(state = {}, action) {
   // TODO: This only works for our style of api...
-  if (action.response) { // is a list
-    let new_state = merge({}, state, action.response);
-    return new_state;
+
+  if (action.type && action.type.indexOf('SUCCESS') !== -1) { // is a list
+    var resources = action.response.results;
+    if(!Array.isArray(resources)){
+      resources = [resources];
+    }
+
+    let new_resources = {};
+    resources.forEach(function (resource) {
+      if (false && resource.resource_id) {
+        new_resources[resource.resource_id] = resource;
+        return;
+      }
+
+      console.debug('Resource did not have resource_id property. Is verbose=true?');
+    });
+
+    return Object.assign({}, state, new_resources);
   }
 
   return state
 }
 
 // Updates error message to notify about the failed fetches.
+// This might not currently be in use...
 function globalErrorMessage(state = null, action) {
   const { type, error } = action
 

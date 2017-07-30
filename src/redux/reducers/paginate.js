@@ -26,19 +26,34 @@ export default function paginate({ types, mapActionToKey }) {
           isFetching: true
         })
       case successType:
-        const new_cursor_map = {};
+        let new_cursor_map = {};
+        let resources = {};
+        let start_cursor = action.next_cursor; // could be undefined for initial page
+
+        new_cursor_map[action.next_cursor || 'start'] = Date.now();
+
+        if (!start_cursor) {
+          start_cursor = 'start';
+          resources = action.response.results;
+          new_cursor_map = {[action.next_cursor] : Date.now()}
+          new_cursor_map = Object.assign({}, new_cursor_map, {});
+        }
+        else  {
+          new_cursor_map = {[action.next_cursor]: Date.now()};
+          resources = state.ids.concat(action.response.results);
+          new_cursor_map = Object.assign({}, new_cursor_map, state.cursors);
+        }
 
         // action.next_cursor is the cursor used for the request (i.e. start cursor)
         // action.response.cursor is for the "next" request of data (if any)
-        new_cursor_map[action.next_cursor || 'start'] = Date.now();
-        const jive = Object.assign({}, state, {
+        const new_state = Object.assign({}, state, {
           isFetching: false,
-          ids: state.ids.concat(action.response.results),
+          ids: resources,
           cursor: action.response.cursor,
           more: action.response.more,
           cursors: Object.assign({}, new_cursor_map, state.cursors)
         })
-        return jive;
+        return new_state;
       case failureType:
         return Object.assign({}, state, {
           isFetching: false

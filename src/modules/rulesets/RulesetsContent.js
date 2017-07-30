@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { action, LOAD_RULESETS_PAGE } from '../../redux/actions';
 import Button from 'react-toolbox/lib/button/Button';
+import RulesetToolbar from './RulesetToolbar';
 import Grid from './Grid';
 
 class RulesetsContent extends Component {
@@ -10,15 +11,19 @@ class RulesetsContent extends Component {
     this.props.loadRulesetData();
   }
   render() {
+
     let next_cursor = this.props.next_cursor;
     let more = this.props.more;
+
     return (
       <div>
+        <RulesetToolbar />
+
         <Grid entities={this.props.entities} />
         { more && (<div style={{textAlign:'center', paddingTop:'20px'}}><Button onClick={() => this.props.loadRulesetData(next_cursor) } primary raised>Load More</Button></div>) }
       </div>
     );
-  }
+  }r
 }
 
 function mapStateToProps(state) {
@@ -34,7 +39,6 @@ function mapStateToProps(state) {
     entities = paginator.ids;
     next_cursor = paginator.cursor;
   }
-
 
   return {entities, more, next_cursor};
 }

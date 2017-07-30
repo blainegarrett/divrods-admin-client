@@ -94,11 +94,11 @@ export function fetchUser({provider_data}) {
 }
 
 export function fetchPrefs({next_cursor = ''}) {
-  return callApi('/api/rest/v1.0/preferences', {cursor: cleanCursor(next_cursor), verbose:true, limit:5}, {}, 'GET');
+  return callApi('/api/rest/v1.0/preferences', {cursor: cleanCursor(next_cursor), verbose:true, limit:50}, {}, 'GET');
 }
 
 export function fetchRulesets({next_cursor = ''}) {
-  return callApi('/api/rest/v1.0/rulesets', {cursor: cleanCursor(next_cursor), verbose:true, limit:5}, {}, 'GET');
+  return callApi('/api/rest/v1.0/rulesets', {cursor: cleanCursor(next_cursor), verbose:true, limit:50}, {}, 'GET');
 }
 
 export function fetchRulesetRules({ruleset_id, next_cursor = ''}) {
@@ -107,4 +107,8 @@ export function fetchRulesetRules({ruleset_id, next_cursor = ''}) {
 
 export function fetchUsers({next_cursor = ''}) {
   return callApi('/api/auth/users', {cursor: cleanCursor(next_cursor), verbose:true, limit:5}, {}, 'GET');
+}
+
+export function generateRuleset({min_support, min_confidence, make_default}) {
+  return callApi('/api/rest/v1.0/rulesets', {min_support, min_confidence, make_default, verbose:true}, {}, 'POST')
 }

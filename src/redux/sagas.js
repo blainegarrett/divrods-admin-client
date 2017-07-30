@@ -12,6 +12,10 @@ import { watchLogoutAction, watchLoginAction, watchAuthenticationSuccess } from 
 // apiFn  : supporting api method eg. pref_service_client.fetchPrefs
 // args   : object of arguments passed to the generator on to the apiFn and ultimatly to action
 function* fetchEntity(asyncActionMap, apiFn, ...args) {
+  if (!apiFn || typeof apiFn !== 'function') {
+    throw new Error('api function is undefined or not of type function.')
+  }
+
   yield put( asyncActionMap.request(...args))
   const results = yield call(apiFn, ...args)
   const {response, error} = results;
@@ -28,45 +32,50 @@ export const fetchRulesets     = fetchEntity.bind(null, actions.async_call_mappe
 export const fetchRulesetRules = fetchEntity.bind(null, actions.async_call_mapper(actions.RULES), pref_service_client.fetchRulesetRules)
 export const fetchUsers        = fetchEntity.bind(null, actions.async_call_mapper(actions.USERS), pref_service_client.fetchUsers)
 
+export const generateRuleset   = fetchEntity.bind(null, actions.async_call_mapper(actions.GENERATE_RULESET), pref_service_client.generateRuleset)
 
-function jive(state, index_name, index_subname, next_cursor) {
+function jive(state, index_name, index_subname, next_cursor, force_refresh=false) {
+  // TODO: This works for pagination, but not for individual entities...
+
+  if (force_refresh) {
+    return false;
+  }
   const next_cursor_index = next_cursor || 'start';
   if (state.pagination[index_name] &&
       state.pagination[index_name][index_subname] &&
       state.pagination[index_name][index_subname].cursors[next_cursor_index]) {
-
-    //console.log("shit is loaded mother fucker!!!!!!!!");
     return true;
   }
-  //console.log("shit was def not loaded already...");
   return false;
 }
 
-function* loadPrefs(next_cursor) {
+function* loadPrefs(next_cursor, force_refresh=false) {
   // TODO: Check to see if we have data for this cursor
-  const loaded = yield select(jive, "prefs", "all", next_cursor)
+
+  const loaded = yield select(jive, "prefs", "all", next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchPrefs, {next_cursor});
   }
 }
 
-function* loadRulesets(next_cursor) {
+function* loadRulesets(next_cursor, force_refresh=false) {
   // TODO: Check to see if we have data for this cursor
-  const loaded = yield select(jive, "rulesets", "all", next_cursor)
+  const loaded = yield select(jive, "rulesets", "all", next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchRulesets, {next_cursor});
   }
 }
-function* loadRulesetRules(ruleset_id, next_cursor) {
+function* loadRulesetRules(ruleset_id, next_cursor, force_refresh=false) {
   // TODO: Check to see if we have data for this cursor
-  const loaded = yield select(jive, "ruleset_rules", ruleset_id, next_cursor)
+  const loaded = yield select(jive, "ruleset_rules", ruleset_id, next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchRulesetRules, {ruleset_id, next_cursor});
   }
 }
-function* loadUsers(next_cursor) {
+
+function* loadUsers(next_cursor, force_refresh=false) {
    // TODO: Check to see if we have data for this cursor
-  const loaded = yield select(jive, "auth_users", "all", next_cursor)
+  const loaded = yield select(jive, "auth_users", "all", next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchUsers, {next_cursor});
   }
@@ -106,8 +115,28 @@ function* watchLoadAuthUsersPage() {
 }
 
 
+function* watchInitiateGenerateRulesAction() {
+  while(true) {
+    // Form params..
+    const {min_support, min_confidence, make_default} = yield take(actions.INITIATE_GENERATE_RULES);
+    yield fork(generateRuleset, {min_support, min_confidence, make_default});
+  }
+}
+
+function* watchGenerateRulesActionSuccess() {
+  while(true) {
+    yield take(actions.GENERATE_RULESET.SUCCESS);
+
+    // Force reload the index of items - triggers grid to reload
+    yield fork(loadRulesets, undefined, true);
+  }
+}
+
 export default function* root() {
   yield all([
+    fork(watchInitiateGenerateRulesAction),
+    fork(watchGenerateRulesActionSuccess),
+
     fork(watchLoadPrefsPage),
     fork(watchLoadRulesetsPage),
     fork(watchLoadRulesetRulesPage),

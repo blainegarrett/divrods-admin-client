@@ -28,6 +28,7 @@ export function async_call_mapper(actionGroup) {
   // Helper to map return arguments from async calls to hydrated actions to be handled by pagination, etc
   // actionGroup is a object created by createRequestTypes
   return {
+    actionGroup, // for debugging purposes
     request: (async_args) => action(actionGroup[REQUEST], {...async_args}),
     success: (response, async_args) => action(actionGroup[SUCCESS], {response, ...async_args}),
     failure: (error, async_args) => action(actionGroup[FAILURE], {error, ...async_args}),
@@ -40,6 +41,8 @@ export const LOAD_RULESETS_PAGE = 'LOAD_RULESETS_PAGE';
 export const LOAD_RULES_PAGE = 'LOAD_RULES_PAGE';
 export const LOAD_USERS_PAGE = 'LOAD_USERS_PAGE';
 
+export const INITIATE_GENERATE_RULES = 'INITIATE_GENERATE_RULES';
+export const GENERATE_RULESET = createRequestTypes('GENERATE_RULESET')
 
 // Move to XAUTH
 export const USER = createRequestTypes('USER')
