@@ -10,46 +10,48 @@ import { INITIATE_CREATE_USER } from '../actions';
 
 class CreateUserAction extends Component {
   state = {
-    showCreateUserDialog : true,
+    showCreateUserDialog : false,
     showConfirmationDialog : false,
 
     // Form Values State
-    username : 'cooluser',
-    first_name : 'Cool',
-    last_name : 'User',
-    email : 'cooluser@example.com',
-    password : 'asdf123',
-    password_confirm : 'asdf123',
+    username : '',
+    first_name : '',
+    last_name : '',
+    email : '',
+    password : '',
+    password_confirm : '',
   }
-    hideCreateRulesetHandler = () => {
-      this.setState({showCreateUserDialog: false});
-    }
-    showCreateRulesetHandler = () => {
-      this.setState({showCreateUserDialog: true});
-    }
 
-    hideConfirmationDialogHandler = () => {
-      this.setState({showConfirmationDialog: false, showCreateUserDialog:false});
-    }
-    showConfirmationDialogHandler = () => {
-      this.setState({showConfirmationDialog: true});
-    }
+  hideCreateRulesetHandler = () => {
+    this.setState({showCreateUserDialog: false});
+  }
+  showCreateRulesetHandler = () => {
+    this.setState({showCreateUserDialog: true});
+  }
 
-    handleChange = (name, value) => {
-      this.setState({...this.state, [name]: value});
-    };
+  hideConfirmationDialogHandler = () => {
+    this.setState({showConfirmationDialog: false, showCreateUserDialog:false});
+  }
+  showConfirmationDialogHandler = () => {
+    this.setState({showConfirmationDialog: true});
+  }
 
-    submitHandler = () => {
-      this.props.createUser(this.state.username, this.state.first_name, this.state.last_name, this.state.email, this.state.password);
-      // Perhaps set state to processing...
-    }
-    createRulesetDialogActions = [
-      { label: "Cancel", onClick: this.hideCreateRulesetHandler },
-      { label: "Create", onClick: this.submitHandler.bind(this), primary:true, raised:true}
-    ];
-    confirmationDialogActions = [
-      { label: "Continue", onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
-    ];
+  handleChange = (name, value) => {
+    this.setState({...this.state, [name]: value});
+  };
+
+  submitHandler = () => {
+    this.props.createUser(this.state.username, this.state.first_name, this.state.last_name, this.state.email, this.state.password);
+    // Perhaps set state to processing...
+  }
+  createRulesetDialogActions = [
+    { label: "Cancel", onClick: this.hideCreateRulesetHandler },
+    { label: "Create", onClick: this.submitHandler.bind(this), primary:true, raised:true}
+  ];
+  confirmationDialogActions = [
+    { label: "Continue", onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
+  ];
+
   render() {
 
     let do_show_dialog = this.state.showCreateUserDialog;
@@ -97,7 +99,6 @@ class CreateUserAction extends Component {
     );
   }
 }
-
 
 function mapDispatchToProps(dispatch) {
   return {
