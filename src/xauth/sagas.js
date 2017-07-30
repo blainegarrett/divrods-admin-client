@@ -1,37 +1,25 @@
-// Be sure to register your sagas with the root sagas...
+// Sagas for the auth system
+// Be sure to add your saga to registeredSagas that is exported as default at the end of the file
 
 import { take, call, fork, select } from 'redux-saga/effects';
 import { LOAD_USERS_PAGE, SET_PASSWORD, USERS, CREATE_USER, INITIATE_CREATE_USER, AUTHENTICATE, LOGOUT, LOGIN } from './actions';
 import { pref_service_client } from '../services';
 import { jive, fetchEntity } from '../redux/sagas'; // Circular dependency...?
 import { async_call_mapper } from '../redux/actions';
-/*
-// This is cloned from the saga demo... consider moving somewhere good
-function* fetchEntity(entity, apiFn, id, url) {
-  yield put( entity.request(id) )
-  const {response, error} = yield call(apiFn, url || id)
-  if(response)
-    yield put( entity.success(id, response) )
-  else
-    yield put( entity.failure(id, error) )
-}*/
 
-// Bind fetches
-export const fetchUser = fetchEntity.bind(null, async_call_mapper(AUTHENTICATE), pref_service_client.fetchUser)
+// Bind async api fetchers
+export const fetchUser    = fetchEntity.bind(null, async_call_mapper(AUTHENTICATE), pref_service_client.fetchUser)
 export const createUser   = fetchEntity.bind(null, async_call_mapper(CREATE_USER), pref_service_client.createUser)
-export const fetchUsers        = fetchEntity.bind(null, async_call_mapper(USERS), pref_service_client.fetchUsers)
-export const setPassword      = fetchEntity.bind(null, async_call_mapper(SET_PASSWORD), pref_service_client.setPassword)
+export const fetchUsers   = fetchEntity.bind(null, async_call_mapper(USERS), pref_service_client.fetchUsers)
+export const setPassword  = fetchEntity.bind(null, async_call_mapper(SET_PASSWORD), pref_service_client.setPassword)
 
-//
+// Load Load a page of users - note: page size is staticly defined in pref_service_client
 function* loadUsers(next_cursor, force_refresh=false) {
-   // TODO: Check to see if we have data for this cursor
   const loaded = yield select(jive, "auth_users", "all", next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchUsers, {next_cursor});
   }
 }
-
-
 
 // Watch for Logout attempt
 export function* watchLogoutAction() {
@@ -86,9 +74,6 @@ export function* watchCreateUserSuccess() {
   while(true) {
     const success_action = yield take(CREATE_USER.SUCCESS);
 
-    console.log('NEW USER');
-    console.log(success_action);
-
     let password = success_action.password;
     let user_resource_id = success_action.response.results.resource_id;
     // Force reload the index of items - triggers grid to reload
@@ -105,3 +90,15 @@ export function* watchLoadAuthUsersPage() {
     yield fork(loadUsers, next_cursor);
   }
 }
+
+// Easiliy indexable list of all sagas
+const registeredSagas = [
+  fork(watchLoadAuthUsersPage),
+  fork(watchCreateUserSuccess),
+  fork(watchInitiateCreateUserAction),
+  fork(watchLogoutAction),
+  fork(watchLoginAction),
+  fork(watchAuthenticationSuccess)
+];
+
+export default registeredSagas;

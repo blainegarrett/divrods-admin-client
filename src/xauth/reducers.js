@@ -52,7 +52,6 @@ export function createUserFormState(state={async_success: false, error_message:n
       return new_state;
 
     case CREATE_USER.FAILURE:
-      console.log(action);
       const fail_state = {
         async_success: false,
         error_message: action.error
@@ -61,5 +60,4 @@ export function createUserFormState(state={async_success: false, error_message:n
     default:
       return state
   }
-
 }

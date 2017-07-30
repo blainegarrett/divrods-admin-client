@@ -3,7 +3,7 @@ import { take, put, call, fork, select, all } from 'redux-saga/effects';
 import { pref_service_client } from '../services';
 import * as actions from './actions';
 
-import { watchLoadAuthUsersPage, watchCreateUserSuccess, watchInitiateCreateUserAction, watchLogoutAction, watchLoginAction, watchAuthenticationSuccess } from '../xauth/sagas';
+import xauthSagas from '../xauth/sagas';
 
 /***************************** Subroutines ************************************/
 
@@ -121,16 +121,11 @@ function* watchGenerateRulesActionSuccess() {
 
 export default function* root() {
   yield all([
+    ...xauthSagas,
     fork(watchInitiateGenerateRulesAction),
     fork(watchGenerateRulesActionSuccess),
-    fork(watchInitiateCreateUserAction),
-    fork(watchCreateUserSuccess),
     fork(watchLoadPrefsPage),
     fork(watchLoadRulesetsPage),
     fork(watchLoadRulesetRulesPage),
-    fork(watchLoadAuthUsersPage),
-    fork(watchAuthenticationSuccess),
-    fork(watchLoginAction),
-    fork(watchLogoutAction),
   ])
 }
