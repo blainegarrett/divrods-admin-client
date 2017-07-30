@@ -3,16 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Login from './Login';
 import { loginUser } from './actions';
+import Snackbar from 'react-toolbox/lib/snackbar/Snackbar';
 
 export function loginRequired(level) {
   return function(PageComponent) {
     class SecurePageWrapper extends Component {
+
       render() {
         const { isAuthenticated, errorMessage } = this.props.auth;
         const { dispatch } = this.props;
+        const { sessionTimedOut } =  this.props;
+
+        const showLogin = sessionTimedOut || !isAuthenticated;
 
         // TODO: Also check level
-        if (!isAuthenticated) {
+        if (showLogin) {
           // TODO: Tell react router redirect to login page
           // TODO: Somehow inform the server to fire off a 401, 403, etc
           return (
@@ -23,6 +28,14 @@ export function loginRequired(level) {
                 errorMessage={errorMessage}
                 onLoginClick={ creds => dispatch(loginUser(creds)) }
               />
+
+            <Snackbar
+              label='Your Session has expired. Please login again.'
+              ref='snackbar'
+              type='warning'
+              active={sessionTimedOut}
+            />
+
             </div>);
         }
         return (<PageComponent {...this.props} />);
@@ -35,8 +48,8 @@ export function loginRequired(level) {
     }
 
     function authMapStateToProps(state) {
-      //throw new NotAuthorizedException('derp');
-      return { auth: state.auth};
+      const sessionTimedOut = (state.globalErrorMessage === 'Authentication Failed');
+      return { auth: state.auth, sessionTimedOut: sessionTimedOut};
     }
 
   function authMapDispatchToProps(dispatch) {

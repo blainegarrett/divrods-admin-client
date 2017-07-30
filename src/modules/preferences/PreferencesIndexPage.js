@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { loginRequired } from '../../xauth/decorators';
+import PreferenceContent from './PreferenceContent'
 
 class PreferencesIndexPage extends Component {
     render() {
         return (
             <div>
                 <h2>Preferences</h2>
-                <b>Coming Soon</b>
+                <PreferenceContent />
             </div>
         );
     }
