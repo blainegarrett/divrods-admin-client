@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import configureStore, { history } from './redux/store';
 import rootSaga from './redux/sagas';
 import ThemeProvider from 'react-toolbox/lib/ThemeProvider';
-import registerServiceWorker from './registerServiceWorker';
+//import registerServiceWorker from './registerServiceWorker';
 import App from './containers/App';
 
 import theme from './assets/react-toolbox/theme'
@@ -31,4 +31,5 @@ render(
   </ThemeProvider>,
   target
 );
-registerServiceWorker();
+//TODO: We may want to do this eventually...
+//registerServiceWorker();

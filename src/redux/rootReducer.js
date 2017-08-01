@@ -36,21 +36,6 @@ function entities(state = {}, action) {
   return state
 }
 
-// Updates error message to notify about the failed fetches.
-// This might not currently be in use...
-function globalErrorMessage(state = null, action) {
-  const { type, error } = action
-
-  if (type === ActionTypes.RESET_GLOBAL_ERROR_MESSAGE) {
-    return null
-  } else if (error) {
-    return action.error
-  }
-
-  return state
-}
-
-
 // Updates the pagination data for different actions.
 const pagination = combineReducers({
   prefs: paginate({
@@ -90,11 +75,10 @@ const pagination = combineReducers({
 export default combineReducers({
   entities,
   pagination,
-  globalErrorMessage,
   router: routerReducer,
   layout: layoutReducers,
   auth: authStateReducer,
-  createUserFormState
+  createUserFormState,
 });
 
 

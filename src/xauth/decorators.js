@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Login from './Login';
 import { loginUser } from './actions';
-import Snackbar from 'react-toolbox/lib/snackbar/Snackbar';
 
 export function loginRequired(level) {
   return function(PageComponent) {
@@ -12,9 +11,8 @@ export function loginRequired(level) {
       render() {
         const { isAuthenticated, errorMessage } = this.props.auth;
         const { dispatch } = this.props;
-        const { sessionTimedOut } =  this.props;
 
-        const showLogin = sessionTimedOut || !isAuthenticated;
+        const showLogin = !isAuthenticated;
 
         // TODO: Also check level
         if (showLogin) {
@@ -28,14 +26,6 @@ export function loginRequired(level) {
                 errorMessage={errorMessage}
                 onLoginClick={ creds => dispatch(loginUser(creds)) }
               />
-
-            <Snackbar
-              label='Your Session has expired. Please login again.'
-              ref='snackbar'
-              type='warning'
-              active={sessionTimedOut}
-            />
-
             </div>);
         }
         return (<PageComponent {...this.props} />);
@@ -48,8 +38,7 @@ export function loginRequired(level) {
     }
 
     function authMapStateToProps(state) {
-      const sessionTimedOut = (state.globalErrorMessage === 'Authentication Failed');
-      return { auth: state.auth, sessionTimedOut: sessionTimedOut};
+      return { auth: state.auth};
     }
 
   function authMapDispatchToProps(dispatch) {

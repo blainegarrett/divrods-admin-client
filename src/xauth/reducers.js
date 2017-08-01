@@ -13,6 +13,18 @@ let defaultAuthState = {
 defaultAuthState.isAuthenticated = localStorage.getItem('access_token') ? true : false;
 
 export function authStateReducer(state = defaultAuthState, action) {
+  // If we had an async request that failed
+  // TODO: Base this off status code 401?
+  if (action.error && (action.error === 'Authentication Required' ||
+      action.error === 'Authentication Failed')
+    ) {
+    return Object.assign({}, state, {
+      isFetching: false,
+      isAuthenticated: false,
+      errorMessage: 'You\'re session timed out or is invalid. Please login again.'
+    })
+  }
+
   switch (action.type) {
     case AUTHENTICATE.REQUEST:
       return Object.assign({}, state, {

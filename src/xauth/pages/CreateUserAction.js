@@ -12,6 +12,7 @@ class CreateUserAction extends Component {
   state = {
     showCreateUserDialog : false,
     showConfirmationDialog : false,
+    isFormValid: false,
 
     // Form Values State
     username : '',
@@ -20,6 +21,23 @@ class CreateUserAction extends Component {
     email : '',
     password : '',
     password_confirm : '',
+  }
+
+  isFormValid = () => {
+    let username = this.state.username;
+    let password = this.state.password;
+    let first_name = this.state.first_name;
+    let last_name = this.state.last_name;
+    let email = this.state.email;
+
+    let base_valid = [username, password, email, first_name, last_name].every(function(fieldValue, i, arr) {
+      if (fieldValue.trim().length < 1)
+        return false
+
+      return true;
+    });
+
+    return base_valid;
   }
 
   hideCreateRulesetHandler = () => {
@@ -37,17 +55,15 @@ class CreateUserAction extends Component {
   }
 
   handleChange = (name, value) => {
-    this.setState({...this.state, [name]: value});
+    this.setState({...this.state, [name]: value, isFormValid: this.isFormValid()});
   };
 
   submitHandler = () => {
-    this.props.createUser(this.state.username, this.state.first_name, this.state.last_name, this.state.email, this.state.password);
-    // Perhaps set state to processing...
+    if (this.isFormValid()) {
+      this.props.createUser(this.state.username, this.state.first_name, this.state.last_name, this.state.email, this.state.password);
+    }
   }
-  createRulesetDialogActions = [
-    { label: "Cancel", onClick: this.hideCreateRulesetHandler },
-    { label: "Create", onClick: this.submitHandler.bind(this), primary:true, raised:true}
-  ];
+
   confirmationDialogActions = [
     { label: "Continue", onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
   ];
@@ -59,22 +75,17 @@ class CreateUserAction extends Component {
       do_show_dialog = false;
     }
 
+    let createRulesetDialogActions = [
+      { label: "Cancel", onClick: this.hideCreateRulesetHandler },
+      { label: "Create", disabled:!this.state.isFormValid, onClick: this.submitHandler.bind(this), primary:true, raised:true}
+    ];
+
     return (
       <div>
         <Button icon='add' onClick={this.showCreateRulesetHandler} primary raised>Create User</Button>
 
         <Dialog
-          actions={this.confirmationDialogActions}
-          active={this.state.showConfirmationDialog}
-          onEscKeyDown={this.hideConfirmationDialogHandler}
-          onOverlayClick={this.hideConfirmationDialogHandler}
-          title='Ruleset Generation Started'
-        >
-          <p>Generating the new ruleset may take a few minutes to complete. Refresh this page in a few minutes to see the generated rules.</p>
-        </Dialog>
-
-        <Dialog
-          actions={this.createRulesetDialogActions}
+          actions={createRulesetDialogActions}
           active={do_show_dialog}
           onEscKeyDown={this.hideCreateRulesetHandler}
           onOverlayClick={this.hideCreateRulesetHandler}
@@ -91,8 +102,8 @@ class CreateUserAction extends Component {
 
               <h3>Profile</h3>
               <Input required={true} type='text' label='Email' error={false} value={this.state.email} onChange={this.handleChange.bind(this, 'email')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
-              <Input type='text' label='First Name' error={false} value={this.state.first_name} onChange={this.handleChange.bind(this, 'first_name')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
-              <Input type='text' label='Last Name' error={false} value={this.state.last_name} onChange={this.handleChange.bind(this, 'last_name')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
+              <Input required={true} type='text' label='First Name' error={false} value={this.state.first_name} onChange={this.handleChange.bind(this, 'first_name')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
+              <Input required={true} type='text' label='Last Name' error={false} value={this.state.last_name} onChange={this.handleChange.bind(this, 'last_name')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
             </section>
           </Dialog>
       </div>

@@ -43,7 +43,7 @@ function _hashCode(string) {
   return hash;
 }
 
-function callApi(endpoint, params, data, method='GET') {
+function callApi(endpoint, params, data, method, skip_auth_header=false) {
   //const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
   // Resolve the url
@@ -60,9 +60,11 @@ function callApi(endpoint, params, data, method='GET') {
   options['headers'] = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
   // If we are authenticated, attach the access_token
-  const access_token = localStorage.getItem('access_token');
-  if (access_token) {
-    options['headers']['Authorization'] = 'Bearer ' + access_token;
+  if (!skip_auth_header) {
+    const access_token = localStorage.getItem('access_token');
+    if (access_token) {
+      options['headers']['Authorization'] = 'Bearer ' + access_token;
+    }
   }
 
   // Handle Body/Payload - Note: GET, HEAD, DELETE do not accept payloads
@@ -90,7 +92,7 @@ const cleanCursor = cursor => !cursor ? '' : cursor;
 
 // Rename this to something "authenticate"
 export function fetchUser({provider_data}) {
-  return callApi('/api/auth/authenticate', {}, provider_data, 'POST');
+  return callApi('/api/auth/authenticate', {}, provider_data, 'POST', true);
 }
 
 export function fetchPrefs({next_cursor = ''}) {
