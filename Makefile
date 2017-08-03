@@ -16,4 +16,4 @@ build:
 dev:
 	npm run start
 deploy:
-	appcfg.py update -A divining-admin -V $(filter-out $@,$(MAKECMDGOALS)) ./app.yaml
+	appcfg.py update -A divrods-admin -V $(filter-out $@,$(MAKECMDGOALS)) ./app.yaml

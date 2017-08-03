@@ -1,2 +1,4 @@
 //export const PREF_SERVICE_DOMAIN = 'http://localhost:9090';
-export const PREF_SERVICE_DOMAIN = 'https://pref-service-dev.appspot.com';
+export const PREF_SERVICE_DOMAIN = process.env.REACT_APP_PREFS_API_HOST;
+export const REACT_APP_ADMIN_CLIENT_VERSION = process.env.REACT_APP_ADMIN_CLIENT_VERSION;
+export const REACT_APP_MIA_SEARCH_HOST = process.env.REACT_APP_MIA_SEARCH_HOST

@@ -6,7 +6,7 @@ import ListItem from 'react-toolbox/lib/list/ListItem';
 import ListSubHeader from 'react-toolbox/lib/list/ListSubHeader';
 import ListDivider from 'react-toolbox/lib/list/ListDivider';
 import NavDrawer from 'react-toolbox/lib/layout/NavDrawer';
-
+import { REACT_APP_ADMIN_CLIENT_VERSION } from '../../constants';
 import { withRouter } from 'react-router-dom';
 
 // ["sm","smTablet","md","lg","lgTablet","xl","xxl","xxxl"]
@@ -34,7 +34,13 @@ export default class MainMenu extends Component {
             <ListDivider />
             <ListSubHeader caption='Authentication' />
             <ListItemRouteLink url='/auth/users' leftIcon='security' caption='Users' />
+            <ListSubHeader caption='Settings' />
+            <ListItemRouteLink url='/settings/environment' leftIcon='settings' caption='Environment' />
           </List>
+        </div>
+
+        <div>
+          <pre style={{ margin:'10px' }}>Client version: { REACT_APP_ADMIN_CLIENT_VERSION } </pre>
         </div>
       </NavDrawer>
     );

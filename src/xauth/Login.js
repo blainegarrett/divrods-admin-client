@@ -8,8 +8,8 @@ import Button from 'react-toolbox/lib/button/Button';
 export default class Login extends Component {
 
   state = {
-    username : '',
-    password : '',
+    username : 'utility_user',
+    password : 'fYKp?$!69+berA7z@kv3uGS#VhEB5',
   }
 
   handleFieldChange = (name, value) => {

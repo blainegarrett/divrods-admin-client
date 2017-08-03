@@ -3,8 +3,10 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import {AuthUsersIndexPage} from './xauth/pages'
-import NotFoundPage from './components/pages/NotFoundPage'
+import {AuthUsersIndexPage} from './xauth/pages';
+import NotFoundPage from './components/pages/NotFoundPage';
+import SettingsEnvironmentPage from './components/pages/SettingsEnvironmentPage';
+
 import {SessionsIndexPage} from './modules/sessions';
 import {RulesetsIndexPage} from './modules/rulesets';
 import {RulesetsRulesIndexPage} from './modules/ruleset_rules';
@@ -23,6 +25,7 @@ export default class App extends Component {
         <Route exact path="/items" component={ItemsIndexPage} />
         <Route exact path="/sessions" component={SessionsIndexPage} />
         <Route exact path="/auth/users" component={AuthUsersIndexPage} />
+        <Route exact path="/settings/environment" component={SettingsEnvironmentPage} />
         <Route component={NotFoundPage}/>
       </Switch>
     );

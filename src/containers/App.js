@@ -23,6 +23,7 @@ class App extends Component {
     render() {
       const { routes, authState, logoutUser, layoutState } = this.props;
         return (
+          <div>
             <Layout>
               <div style={{ flex: 1, overflowY: 'auto', padding: '4.0rem 2.0rem' }}>
                 <MainMenu
@@ -45,6 +46,8 @@ class App extends Component {
                     </div>
                 </Sidebar>
             </Layout>
+          </div>
+
         );
     }
 }
