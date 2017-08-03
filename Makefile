@@ -5,7 +5,8 @@ help:
 	@echo "TODO: Write the install help"
 
 install:
-	npm install
+	#npm install
+	cp ./.env.local_template ./.env.local
 
 run:
 	dev_appserver.py . --port=8080 --admin_port=8081
