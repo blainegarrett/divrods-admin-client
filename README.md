@@ -17,6 +17,10 @@ In a terminal, `cd ~/sites/divrods/admin-client`
 #### Install Code Dependencies
 `make install`
 
+#### Running Code
+ * To do development, `make dev` which runs `npm run start` under the hood
+ * To do a dev build, enter `make build-dev` followed by `make run`
+ * To do a prod build, enter `make build-prod` followed by `make run`
 
 
 #### Environment Variables

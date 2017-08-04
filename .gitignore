@@ -36,3 +36,7 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 build
+.env.development.local
+.env.production.local
+prod.build.env
+qa.build.env
