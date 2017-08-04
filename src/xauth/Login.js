@@ -31,27 +31,31 @@ export default class Login extends Component {
         <div>
           <div>
 
-            <Input label='Username' type='text' ref='username' value={this.state.username} onChange={this.handleFieldChange.bind(this, 'username')} className="form-control" placeholder='Username' autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
-            <Input label='Password' type='password' ref='password' value={this.state.password} onChange={this.handleFieldChange.bind(this, 'password')} className="form-control" placeholder='Password' autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
+            <Input label='Username' type='text' value={this.state.username} onChange={this.handleFieldChange.bind(this, 'username')} onKeyPress={this.handleEnterKey.bind(this)} className="form-control" placeholder='Username' autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
+            <Input label='Password' type='password' value={this.state.password} onChange={this.handleFieldChange.bind(this, 'password')} onKeyPress={this.handleEnterKey.bind(this)} className="form-control" placeholder='Password' autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
 
             <Button onClick={this.submitHandler.bind(this)} primary raised>
               Login
             </Button>
 
-            {errorMessage &&
-              <p>Error: {errorMessage}</p>
-            }
+            {errorMessage && (<p>Error: {errorMessage}</p>) }
           </div>
         </div>
       </section>
     )
   }
 
-  handleClick(event) {
+  handleClick() {
     const username = this.state.username
     const password = this.state.password
     const creds = { username: username.value.trim(), password: password.value.trim() }
     this.props.onLoginClick(creds)
+  }
+
+  handleEnterKey(e) {
+    if (e.key === 'Enter') {
+      this.submitHandler();
+    }
   }
 }
 

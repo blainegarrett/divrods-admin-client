@@ -25,8 +25,6 @@ export function authStateReducer(state = defaultAuthState, action) {
     })
   }
 
-  console.log(action);
-
   switch (action.type) {
     case AUTHENTICATE.REQUEST:
       return Object.assign({}, state, {
@@ -58,40 +56,41 @@ export function authStateReducer(state = defaultAuthState, action) {
 
 export function createUserFormState(state={async_success: false, error_message:null}, action) {
   switch(action.type) {
-    case CREATE_USER.SUCCESS:
+    case CREATE_USER.SUCCESS: {
       const new_state = {
         async_success: true,
         error_message: ''
       }
       return new_state;
-
-    case CREATE_USER.FAILURE:
+    } case CREATE_USER.FAILURE: {
       const fail_state = {
         async_success: false,
         error_message: action.error
       }
       return fail_state;
-    default:
+    } default: {
       return state
+    }
   }
 }
 
 export function changePasswordFormState(state={async_success: false, error_message:null}, action) {
   switch(action.type) {
-    case CHANGE_PASSWORD.SUCCESS:
+    case CHANGE_PASSWORD.SUCCESS: {
       const new_state = {
         async_success: true,
         error_message: ''
       }
       return new_state;
-
-    case CHANGE_PASSWORD.FAILURE:
+    } case CHANGE_PASSWORD.FAILURE: {
       const fail_state = {
         async_success: false,
         error_message: action.error
       }
       return fail_state;
-    default:
+    }
+    default: {
       return state
+    }
   }
 }

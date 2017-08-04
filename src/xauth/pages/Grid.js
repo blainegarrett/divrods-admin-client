@@ -1,6 +1,6 @@
+// Grid for User list
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-//import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
 import  IconMenu  from 'react-toolbox/lib/menu/IconMenu';
 import ChangePasswordAction from './ChangePasswordAction';
@@ -19,9 +19,11 @@ class GridActionMenu extends Component {
     );
   }
 }
-// Props.item
+GridActionMenu.propTypes = {
+  item : PropTypes.object, // bound action creator
+};
 
-class Grid extends Component {
+export default class Grid extends Component {
   render() {
     return (
       <Table multiSelectable onRowSelect={this.handleRowSelect} style={{ marginTop: 10 }}>
@@ -47,17 +49,6 @@ class Grid extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Grid);
-
-Grid.propTypes = { }
+Grid.propTypes = {
+  entities: PropTypes.array // array of items to render
+};

@@ -16,7 +16,7 @@ export const changePassword = fetchEntity.bind(null, async_call_mapper(CHANGE_PA
 
 // Load Load a page of users - note: page size is staticly defined in pref_service_client
 function* loadUsers(next_cursor, force_refresh=false) {
-  const loaded = yield select(jive, "auth_users", "all", next_cursor, force_refresh)
+  const loaded = yield select(jive, 'auth_users', 'all', next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchUsers, {next_cursor});
   }
@@ -55,7 +55,7 @@ export function* watchAuthenticationSuccess() {
 
 export function* authenticate(data) {
   // TODO: Case out by auth provider
-  const hash = window.btoa(data.username + ":" + data.password)
+  const hash = window.btoa(data.username + ':' + data.password)
   const provider_data = {'auth_token': hash, 'auth_type': 'basic'};
   yield call(fetchUser, {provider_data});
 }

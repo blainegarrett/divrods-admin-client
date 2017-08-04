@@ -1,6 +1,7 @@
-// A set of reusable react toolbox extensions
-import Button from 'react-toolbox/lib/button/Button';
+// Processor Set for Creating a User
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Button from 'react-toolbox/lib/button/Button';
 import Dialog from 'react-toolbox/lib/dialog/Dialog';
 import Input from 'react-toolbox/lib/input/Input';
 import { bindActionCreators } from 'redux';
@@ -30,7 +31,7 @@ class CreateUserAction extends Component {
     let last_name = this.state.last_name;
     let email = this.state.email;
 
-    let base_valid = [username, password, email, first_name, last_name].every(function(fieldValue, i, arr) {
+    let base_valid = [username, password, email, first_name, last_name].every(function(fieldValue) {
       if (fieldValue.trim().length < 1)
         return false
 
@@ -65,7 +66,7 @@ class CreateUserAction extends Component {
   }
 
   confirmationDialogActions = [
-    { label: "Continue", onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
+    { label: 'Continue', onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
   ];
 
   render() {
@@ -76,8 +77,8 @@ class CreateUserAction extends Component {
     }
 
     let createRulesetDialogActions = [
-      { label: "Cancel", onClick: this.hideCreateRulesetHandler },
-      { label: "Create", disabled:!this.state.isFormValid, onClick: this.submitHandler.bind(this), primary:true, raised:true}
+      { label: 'Cancel', onClick: this.hideCreateRulesetHandler },
+      { label: 'Create', disabled:!this.state.isFormValid, onClick: this.submitHandler.bind(this), primary:true, raised:true}
     ];
 
     return (
@@ -92,13 +93,11 @@ class CreateUserAction extends Component {
           title='Create New User'
           >
             <section>
-
-              { this.props.formState.error_message &&
-                (<p>Error: {this.props.formState.error_message}</p>) }
+              { this.props.formState.error_message && (<p>Error: {this.props.formState.error_message}</p>) }
 
               <h3>Login Credentials</h3>
               <Input required={true} type='text' label='Username' error={false} value={this.state.username} onChange={this.handleChange.bind(this, 'username')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
-              <Input required={true} type='text' label='Password' error={false} value={this.state.password} onChange={this.handleChange.bind(this, 'password')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
+              <Input required={true} type='password' label='Password' error={false} value={this.state.password} onChange={this.handleChange.bind(this, 'password')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
 
               <h3>Profile</h3>
               <Input required={true} type='text' label='Email' error={false} value={this.state.email} onChange={this.handleChange.bind(this, 'email')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
@@ -128,4 +127,7 @@ export default connect(
   mapDispatchToProps
 )(CreateUserAction);
 
-CreateUserAction.propTypes = { }
+CreateUserAction.propTypes = {
+  createUser : PropTypes.func, // bound action creator
+  formState : PropTypes.object // reducer with the changePasswordFormState
+};

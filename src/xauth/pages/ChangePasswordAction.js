@@ -1,4 +1,5 @@
-// A set of reusable react toolbox extensions
+// Processor Set for Change Password
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Dialog from 'react-toolbox/lib/dialog/Dialog';
 import Input from 'react-toolbox/lib/input/Input';
@@ -30,9 +31,7 @@ class ChangePasswordAction extends Component {
       values[override.name] = override.value
     }
 
-    console.log(values);
-
-    let is_valid = [values.password_confirm, values.password].every(function(fieldValue, i, arr) {
+    let is_valid = [values.password_confirm, values.password].every(function(fieldValue) {
       if (fieldValue.trim().length < 1)
         return false
       return true;
@@ -76,7 +75,7 @@ class ChangePasswordAction extends Component {
   }
 
   confirmationDialogActions = [
-    { label: "Continue", onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
+    { label: 'Continue', onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
   ];
 
   render() {
@@ -88,8 +87,8 @@ class ChangePasswordAction extends Component {
     }
 
     let createRulesetDialogActions = [
-      { label: "Cancel", onClick: this.hideCreateRulesetHandler },
-      { label: "Change Password", disabled:!this.state.isFormValid, onClick: this.submitHandler.bind(this), primary:true, raised:true}
+      { label: 'Cancel', onClick: this.hideCreateRulesetHandler },
+      { label: 'Change Password', disabled:!this.state.isFormValid, onClick: this.submitHandler.bind(this), primary:true, raised:true}
     ];
 
     return (
@@ -111,8 +110,8 @@ class ChangePasswordAction extends Component {
 
               <h3>Change Password for <em>{ user.username }</em></h3>
 
-              <Input required={true} type='text' label='Password' error={false} value={this.state.password} onChange={this.handleChange.bind(this, 'password')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
-              <Input required={true} type='text' label='Password (Confirm)' error={false} value={this.state.password_confirm} onChange={this.handleChange.bind(this, 'password_confirm')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
+              <Input required={true} type='password' label='Password' error={false} value={this.state.password} onChange={this.handleChange.bind(this, 'password')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
+              <Input required={true} type='password' label='Password (Confirm)' error={false} value={this.state.password_confirm} onChange={this.handleChange.bind(this, 'password_confirm')} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"/>
             </section>
           </Dialog>
       </div>
@@ -124,13 +123,6 @@ function mapDispatchToProps(dispatch) {
   return {
     changePassword: bindActionCreators((user_resource_id, password) => action(INITIATE_CHANGE_PASSWORD, {user_resource_id, password}), dispatch),
   };
-  /*
-  return {
-    changePassword: bindActionCreators((user_resource_id, password)  => {
-      action(INITIATE_CHANGE_PASSWORD, {user_resource_id, password}), dispatch)
-    })
-  };
-  */
 }
 
 function mapStateToProps(state) {
@@ -144,4 +136,8 @@ export default connect(
   mapDispatchToProps
 )(ChangePasswordAction);
 
-ChangePasswordAction.propTypes = { }
+ChangePasswordAction.propTypes = {
+  changePassword : PropTypes.func, // bound action creator
+  user : PropTypes.object, // user resource
+  formState : PropTypes.object // reducer with the changePasswordFormState
+};
