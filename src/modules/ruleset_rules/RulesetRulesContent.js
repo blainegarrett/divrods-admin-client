@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { action, LOAD_RULES_PAGE } from '../../redux/actions';
@@ -51,4 +52,10 @@ export default connect(
   mapDispatchToProps
 )(RulesetsRulesContent);
 
-RulesetsRulesContent.propTypes = { }
+RulesetsRulesContent.propTypes = {
+  loadRulesetData : PropTypes.func, // bound action creator
+  next_cursor : PropTypes.string, // next page cursor string
+  more : PropTypes.bool, // if there are more entities to load
+  entities: PropTypes.array,
+  ruleset_id: PropTypes.string
+};

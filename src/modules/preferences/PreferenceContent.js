@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { action, LOAD_PREFS_PAGE } from '../../redux/actions';
@@ -51,4 +52,9 @@ export default connect(
   mapDispatchToProps
 )(PreferenceContent);
 
-PreferenceContent.propTypes = { }
+PreferenceContent.propTypes = {
+  loadPreferenceData : PropTypes.func, // bound action creator
+  next_cursor : PropTypes.string, // next page cursor string
+  more : PropTypes.bool, // if there are more entities to load
+  entities: PropTypes.array
+};

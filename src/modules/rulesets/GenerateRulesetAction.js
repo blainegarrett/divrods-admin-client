@@ -1,5 +1,6 @@
 // A set of reusable react toolbox extensions
 import Button from 'react-toolbox/lib/button/Button';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Dialog from 'react-toolbox/lib/dialog/Dialog';
 import Slider from 'react-toolbox/lib/slider/Slider';
@@ -40,11 +41,11 @@ class GenerateRulesetAction extends Component {
       this.setState({showCreateRulesetDialog: false, showConfirmationDialog: true});
     }
     createRulesetDialogActions = [
-      { label: "Cancel", onClick: this.hideCreateRulesetHandler },
-      { label: "Start", onClick: this.submitHandler.bind(this), primary:true, raised:true}
+      { label: 'Cancel', onClick: this.hideCreateRulesetHandler },
+      { label: 'Start', onClick: this.submitHandler.bind(this), primary:true, raised:true}
     ];
     confirmationDialogActions = [
-      { label: "Continue", onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
+      { label: 'Continue', onClick: this.hideConfirmationDialogHandler.bind(this), primary:true, raised:true}
     ];
   render() {
     return (
@@ -98,11 +99,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function mapStateToProps(state) { return {}; }
-
+function mapStateToProps() { return {}; }
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(GenerateRulesetAction);
 
-GenerateRulesetAction.propTypes = { }
+GenerateRulesetAction.propTypes = {
+  generateRuleSet: PropTypes.func
+};

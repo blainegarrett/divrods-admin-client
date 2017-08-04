@@ -13,5 +13,4 @@ class PreferencesIndexPage extends Component {
     }
 }
 export default loginRequired('admin')(PreferencesIndexPage);
-
-PreferencesIndexPage.propTypes = { }
+PreferencesIndexPage.propTypes = { };

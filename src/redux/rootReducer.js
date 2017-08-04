@@ -39,7 +39,7 @@ function entities(state = {}, action) {
 // Updates the pagination data for different actions.
 const pagination = combineReducers({
   prefs: paginate({
-    mapActionToKey: action => 'all',
+    mapActionToKey: () => 'all',
     types: [
       ActionTypes.PREFS.REQUEST,
       ActionTypes.PREFS.SUCCESS,
@@ -47,7 +47,7 @@ const pagination = combineReducers({
     ]
   }),
   rulesets: paginate({
-    mapActionToKey: action => 'all',
+    mapActionToKey: () => 'all',
     types: [
       ActionTypes.RULESETS.REQUEST,
       ActionTypes.RULESETS.SUCCESS,
@@ -63,7 +63,7 @@ const pagination = combineReducers({
     ]
   }),
   auth_users: paginate({
-    mapActionToKey: action => 'all',
+    mapActionToKey: () => 'all',
     types: [
       USERS.REQUEST,
       USERS.SUCCESS,

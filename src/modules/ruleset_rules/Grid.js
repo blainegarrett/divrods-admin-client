@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
 import Avatar from 'react-toolbox/lib/avatar';
 import Chip from 'react-toolbox/lib/chip';
@@ -7,7 +7,7 @@ import Chip from 'react-toolbox/lib/chip';
 
 function format_items(item_list) {
   return item_list.map(function(item, i) {
-    const chunks = item.split(":");
+    const chunks = item.split(':');
     let pref_icon = 'thumb_up';
     if (chunks[1] === '0') {
       pref_icon = 'thumb_down';
@@ -22,10 +22,7 @@ function format_items(item_list) {
   });
 }
 
-class Grid extends Component {
-  componentWillMount() {
-    //this.props.loadPreferenceData();
-  }
+export default class Grid extends Component {
   render() {
     return (
       <Table multiSelectable onRowSelect={this.handleRowSelect} style={{ marginTop: 10 }}>
@@ -46,18 +43,6 @@ class Grid extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Grid);
-
-Grid.propTypes = { }
+Grid.propTypes = {
+  entities: PropTypes.array // array of items to render
+};

@@ -36,7 +36,6 @@ export const generateRuleset   = fetchEntity.bind(null, actions.async_call_mappe
 
 export function jive(state, index_name, index_subname, next_cursor, force_refresh=false) {
   // TODO: This works for pagination, but not for individual entities...
-
   if (force_refresh) {
     return false;
   }
@@ -50,24 +49,21 @@ export function jive(state, index_name, index_subname, next_cursor, force_refres
 }
 
 function* loadPrefs(next_cursor, force_refresh=false) {
-  // TODO: Check to see if we have data for this cursor
-
-  const loaded = yield select(jive, "prefs", "all", next_cursor, force_refresh)
+  const loaded = yield select(jive, 'prefs', 'all', next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchPrefs, {next_cursor});
   }
 }
 
 function* loadRulesets(next_cursor, force_refresh=false) {
-  // TODO: Check to see if we have data for this cursor
-  const loaded = yield select(jive, "rulesets", "all", next_cursor, force_refresh)
+  const loaded = yield select(jive, 'rulesets', 'all', next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchRulesets, {next_cursor});
   }
 }
+
 function* loadRulesetRules(ruleset_id, next_cursor, force_refresh=false) {
-  // TODO: Check to see if we have data for this cursor
-  const loaded = yield select(jive, "ruleset_rules", ruleset_id, next_cursor, force_refresh)
+  const loaded = yield select(jive, 'ruleset_rules', ruleset_id, next_cursor, force_refresh)
   if (!loaded) {
     yield call(fetchRulesetRules, {ruleset_id, next_cursor});
   }

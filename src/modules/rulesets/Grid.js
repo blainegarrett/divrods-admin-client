@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
 import { Link } from 'react-router-dom';
 
-
-class Grid extends Component {
-  componentWillMount() {
-    //this.props.loadPreferenceData();
-  }
+export default class Grid extends Component {
   render() {
     return (
       <Table multiSelectable onRowSelect={this.handleRowSelect} style={{ marginTop: 10 }}>
@@ -33,17 +29,6 @@ class Grid extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Grid);
-
-Grid.propTypes = { }
+Grid.propTypes = {
+  entities: PropTypes.array // array of items to render
+};

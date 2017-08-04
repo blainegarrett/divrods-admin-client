@@ -73,5 +73,6 @@ App.propTypes = {
   authState: PropTypes.object,
   layoutState: PropTypes.object,
   layoutToggleMenu: PropTypes.func,
-  routes: PropTypes.node
+  routes: PropTypes.node,
+  logoutUser: PropTypes.func
 };

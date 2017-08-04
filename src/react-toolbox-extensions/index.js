@@ -1,6 +1,7 @@
 // A set of reusable react toolbox extensions
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class ButtonGroup extends Component {
     render() {
@@ -25,4 +26,8 @@ export class Toolbar extends Component {
     </div>);
   }
 }
-// TODO: Props.propTypes
+Toolbar.propTypes = {
+  rightButtonGroup: PropTypes.node,
+  leftButtonGroup: PropTypes.node,
+  children: PropTypes.node
+};

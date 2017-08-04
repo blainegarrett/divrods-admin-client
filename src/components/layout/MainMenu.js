@@ -14,6 +14,14 @@ import { withRouter } from 'react-router-dom';
 const ListItemRouteLinkThing = ({ history, url, leftIcon, caption }) => (
   <ListItem onClick={() => history.push(url)} caption={caption} leftIcon={leftIcon} />
 );
+ListItemRouteLinkThing.propTypes = {
+  history: PropTypes.object,
+  url: PropTypes.string,
+  leftIcon: PropTypes.node,
+  caption: PropTypes.string
+};
+
+
 const ListItemRouteLink = withRouter(ListItemRouteLinkThing);
 
 export default class MainMenu extends Component {
@@ -29,8 +37,10 @@ export default class MainMenu extends Component {
 
             <ListItemRouteLink url='/preferences' leftIcon='thumbs_up_down' caption='Preference Data' />
             <ListItemRouteLink url='/rulesets' leftIcon='device_hub' caption='Rulesets' />
+            { /*
             <ListItemRouteLink url='/sessions' leftIcon='directions_walk' caption='Sessions'/>
             <ListItemRouteLink url='/items' leftIcon='art_track' caption='Item Support' />
+            */ }
             <ListDivider />
             <ListSubHeader caption='Authentication' />
             <ListItemRouteLink url='/auth/users' leftIcon='security' caption='Users' />
