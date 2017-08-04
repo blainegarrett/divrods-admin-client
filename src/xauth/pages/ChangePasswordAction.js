@@ -95,8 +95,6 @@ class ChangePasswordAction extends Component {
     return (
       <div>
         <MenuItem onClick={this.showChangePasswordHandler} value='lock-outline' icon='security' caption='Change Password' />
-        ( {user.resource_id })
-
         {/* <Button icon='add' onClick={this.showChangePasswordHandler} primary raised>Create User</Button> */}
 
         <Dialog
