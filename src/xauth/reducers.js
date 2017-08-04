@@ -1,6 +1,6 @@
 // reducers.js
 
-import { AUTHENTICATE, LOGOUT, CREATE_USER } from './actions'
+import { AUTHENTICATE, LOGOUT, CREATE_USER, CHANGE_PASSWORD } from './actions'
 
 // The auth reducer. The starting state sets authentication
 // based on a token being in local storage. In a real app,
@@ -24,6 +24,8 @@ export function authStateReducer(state = defaultAuthState, action) {
       errorMessage: 'You\'re session timed out or is invalid. Please login again.'
     })
   }
+
+  console.log(action);
 
   switch (action.type) {
     case AUTHENTICATE.REQUEST:
@@ -64,6 +66,26 @@ export function createUserFormState(state={async_success: false, error_message:n
       return new_state;
 
     case CREATE_USER.FAILURE:
+      const fail_state = {
+        async_success: false,
+        error_message: action.error
+      }
+      return fail_state;
+    default:
+      return state
+  }
+}
+
+export function changePasswordFormState(state={async_success: false, error_message:null}, action) {
+  switch(action.type) {
+    case CHANGE_PASSWORD.SUCCESS:
+      const new_state = {
+        async_success: true,
+        error_message: ''
+      }
+      return new_state;
+
+    case CHANGE_PASSWORD.FAILURE:
       const fail_state = {
         async_success: false,
         error_message: action.error

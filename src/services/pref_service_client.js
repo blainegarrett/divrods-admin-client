@@ -83,7 +83,14 @@ function callApi(endpoint, params, data, method, skip_auth_header=false) {
     })
     .then(
       response => ({response}),
-      function(error) { console.log(error); return ({error: error.messages[0] || 'Something bad happened'}) }
+      function(error) {
+        // Handle network error
+        console.error(error);
+        if (error.messages) {
+          return ({error: error.messages[0] || 'Something bad happened'})
+        }
+        return ({error: error.messages || 'Something bad happened'})
+      }
     )
 }
 
@@ -118,6 +125,11 @@ export function generateRuleset({min_support, min_confidence, make_default}) {
 export function createUser({username, first_name, last_name, email}) {
   return callApi('/api/auth/users', {verbose:true}, {username, first_name, last_name, email}, 'POST')
 }
+
 export function setPassword({user_resource_id, password}) {
   return callApi('/api/auth/users/' + user_resource_id + '/logins', {verbose:true}, {'auth_key': 'ignored_on_create?', 'auth_type': 'basic', 'auth_data': password}, 'POST')
+}
+
+export function changePassword({user_resource_id, password}) {
+  return callApi('/api/auth/users/' + user_resource_id + '/logins/password', {verbose:true}, {'auth_data': password, 'auth_type': 'basic', 'auth_key': 'ignored'}, 'PUT')
 }

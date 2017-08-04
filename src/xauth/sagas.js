@@ -2,7 +2,7 @@
 // Be sure to add your saga to registeredSagas that is exported as default at the end of the file
 
 import { take, call, fork, select } from 'redux-saga/effects';
-import { LOAD_USERS_PAGE, SET_PASSWORD, USERS, CREATE_USER, INITIATE_CREATE_USER, AUTHENTICATE, LOGOUT, LOGIN } from './actions';
+import { LOAD_USERS_PAGE, SET_PASSWORD, USERS, CREATE_USER, INITIATE_CREATE_USER, CHANGE_PASSWORD, INITIATE_CHANGE_PASSWORD, AUTHENTICATE, LOGOUT, LOGIN } from './actions';
 import { pref_service_client } from '../services';
 import { jive, fetchEntity } from '../redux/sagas'; // Circular dependency...?
 import { async_call_mapper } from '../redux/actions';
@@ -12,6 +12,7 @@ export const fetchUser    = fetchEntity.bind(null, async_call_mapper(AUTHENTICAT
 export const createUser   = fetchEntity.bind(null, async_call_mapper(CREATE_USER), pref_service_client.createUser)
 export const fetchUsers   = fetchEntity.bind(null, async_call_mapper(USERS), pref_service_client.fetchUsers)
 export const setPassword  = fetchEntity.bind(null, async_call_mapper(SET_PASSWORD), pref_service_client.setPassword)
+export const changePassword = fetchEntity.bind(null, async_call_mapper(CHANGE_PASSWORD), pref_service_client.changePassword)
 
 // Load Load a page of users - note: page size is staticly defined in pref_service_client
 function* loadUsers(next_cursor, force_refresh=false) {
@@ -84,6 +85,15 @@ export function* watchCreateUserSuccess() {
 }
 
 
+export function* watchInitiateChangePasswordAction() {
+  while(true) {
+    // Form params..
+    const {user_resource_id, password} = yield take(INITIATE_CHANGE_PASSWORD);
+
+    yield fork(changePassword, {user_resource_id, password});
+  }
+}
+
 export function* watchLoadAuthUsersPage() {
   while(true) {
     const {next_cursor} = yield take(LOAD_USERS_PAGE);
@@ -96,6 +106,7 @@ const registeredSagas = [
   fork(watchLoadAuthUsersPage),
   fork(watchCreateUserSuccess),
   fork(watchInitiateCreateUserAction),
+  fork(watchInitiateChangePasswordAction),
   fork(watchLogoutAction),
   fork(watchLoginAction),
   fork(watchAuthenticationSuccess)
