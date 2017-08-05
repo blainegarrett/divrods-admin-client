@@ -21,6 +21,29 @@ function mainMenuReducer(state = defaultState, action) {
   }
 }
 
+const defaultState2 = {active:false, pinned: false, content: null};
+function sideBarReducer(state = defaultState2, action) {
+  switch(action.type) {
+    case LayoutActions.LAYOUT_OPEN_SIDE: {
+      return Object.assign({}, state, {pinned:true});
+    }
+    case LayoutActions.LAYOUT_CLOSE_SIDE:
+    case LOCATION_CHANGE: {
+      return Object.assign({}, state, {pinned:false});
+    }
+    case LayoutActions.LAYOUT_TOGGLE_SIDE: {
+        const is_open = state['pinned'];
+        return Object.assign({}, state, {pinned:!is_open});
+    }
+    case LayoutActions.LAYOUT_SET_CONTENT: {
+      return Object.assign({}, state, {content:action.content});
+    }
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
-  mainMenu: mainMenuReducer
+  mainMenu: mainMenuReducer,
+  sideBar: sideBarReducer
 })

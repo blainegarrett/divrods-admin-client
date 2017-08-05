@@ -8,7 +8,7 @@ import Sidebar from 'react-toolbox/lib/layout/Sidebar';
 import HeaderNav from '../components/layout/HeaderNav';
 import MainMenu from '../components/layout/MainMenu';
 
-import { layoutToggleMenu } from '../redux/layout/actions';
+import { layoutToggleMenu, LAYOUT_CLOSE_SIDE } from '../redux/layout/actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -37,17 +37,18 @@ class App extends Component {
                         { routes }
                     </div>
                 </Panel>
-                <Sidebar pinned={ false } width={ 5 }>
+                <Sidebar
+                  pinned={ layoutState.sideBar.pinned }
+                  width={ 10 }>
                     <div style={{ flex: 1, overflowY: 'auto', padding: '4.0rem 0rem' }}>
-                      <div><IconButton icon='close' onClick={ this.toggleSidebar }/></div>
+                      <div><IconButton icon='close' onClick={ this.props.closeSidebar }/></div>
                       <div style={{ flex: 1 }}>
-                          <p>Supplemental content goes here.</p>
+                          { layoutState.sideBar.content }
                       </div>
                     </div>
                 </Sidebar>
             </Layout>
           </div>
-
         );
     }
 }
@@ -60,7 +61,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     layoutToggleMenu: bindActionCreators(layoutToggleMenu, dispatch),
-    logoutUser: bindActionCreators(logoutUser, dispatch)
+    logoutUser: bindActionCreators(logoutUser, dispatch),
+    closeSidebar: bindActionCreators(() => ({type: LAYOUT_CLOSE_SIDE }), dispatch),
   };
 }
 
@@ -74,5 +76,6 @@ App.propTypes = {
   layoutState: PropTypes.object,
   layoutToggleMenu: PropTypes.func,
   routes: PropTypes.node,
-  logoutUser: PropTypes.func
+  logoutUser: PropTypes.func,
+  closeSidebar: PropTypes.func
 };

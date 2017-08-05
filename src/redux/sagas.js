@@ -7,6 +7,7 @@ import { pref_service_client } from '../services';
 import * as actions from './actions';
 
 import xauthSagas from '../xauth/sagas';
+import { sagas as miacollectionsSagas } from '../modules/miacollections';
 
 /***************************** Subroutines ************************************/
 
@@ -135,21 +136,23 @@ function* watchMakeRulesetDefaultSuccess() {
     const action = yield take(actions.MAKE_RULESET_DEFAULT.SUCCESS);
     yield call(delay, 1000);
     yield fork(loadRulesets, undefined, true);
-    yield put(actions.action('RESETFORMSTATE', {formstateId: action.ruleset_resource_id})); // GIANT TERRIBLE HACK
+    yield put(actions.action('RESETFORMSTATE', {formstateId: action.ruleset_resource_id}));
   }
 }
+
 
 
 
 export default function* root() {
   yield all([
     ...xauthSagas,
+    ...miacollectionsSagas,
     fork(watchInitiateGenerateRulesAction),
     fork(watchGenerateRulesActionSuccess),
     fork(watchLoadPrefsPage),
     fork(watchLoadRulesetsPage),
     fork(watchLoadRulesetRulesPage),
     fork(watchInitiateMakeRulesetDefaultAction),
-    fork(watchMakeRulesetDefaultSuccess)
+    fork(watchMakeRulesetDefaultSuccess),
   ])
 }

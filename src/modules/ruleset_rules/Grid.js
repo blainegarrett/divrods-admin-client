@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
 import Avatar from 'react-toolbox/lib/avatar';
 import Chip from 'react-toolbox/lib/chip';
-
+import ArtLink from '../miacollections/ArtLink';
 
 function format_items(item_list) {
   return item_list.map(function(item, i) {
@@ -16,7 +16,7 @@ function format_items(item_list) {
     return (
       <Chip key={'chip' + i}>
         <Avatar icon={ pref_icon } />
-        <span><a href={'https://collections.artsmia.org/art/' + chunks[0] + '/'} rel="noopener noreferrer" target="_blank">{chunks[0]}</a></span>
+        <span><ArtLink id={chunks[0]} /></span>
       </Chip>
     )
   });
@@ -25,7 +25,7 @@ function format_items(item_list) {
 export default class Grid extends Component {
   render() {
     return (
-      <Table multiSelectable onRowSelect={this.handleRowSelect} style={{ marginTop: 10 }}>
+      <Table selectable={false} onRowSelect={this.handleRowSelect} style={{ marginTop: 10 }}>
         <TableHead>
           <TableCell>Confidence</TableCell>
           <TableCell>Antecedent</TableCell>

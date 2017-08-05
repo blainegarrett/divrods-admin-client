@@ -19,9 +19,7 @@ In a terminal, `cd ~/sites/divrods/admin-client`
 
 #### Running Code
  * To do development, `make dev` which runs `npm run start` under the hood
- * To do a dev build, enter `make build-dev` followed by `make run`
- * To do a prod build, enter `make build-prod` followed by `make run`
-
+ * To make a production grade build for QA environment, enter `make build-qa` followed by `make run`
+ * To make a production grade build for PROD environment, enter `make build-prod` followed by `make run`
 
 #### Environment Variables
-There are 3 distinct environments (local, development, and production)
