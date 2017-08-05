@@ -1,6 +1,6 @@
 // Sagas for the auth system
 // Be sure to add your saga to registeredSagas that is exported as default at the end of the file
-
+import { delay } from 'redux-saga';
 import { take, call, fork, select } from 'redux-saga/effects';
 import { LOAD_USERS_PAGE, SET_PASSWORD, USERS, CREATE_USER, INITIATE_CREATE_USER, CHANGE_PASSWORD, INITIATE_CHANGE_PASSWORD, AUTHENTICATE, LOGOUT, LOGIN } from './actions';
 import { pref_service_client } from '../services';
@@ -78,8 +78,8 @@ export function* watchCreateUserSuccess() {
     let password = success_action.password;
     let user_resource_id = success_action.response.results.resource_id;
     // Force reload the index of items - triggers grid to reload
+    yield call(delay, 1000);
     yield fork(loadUsers, undefined, true);
-
     yield fork(setPassword, {user_resource_id, password});
   }
 }

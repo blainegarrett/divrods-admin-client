@@ -113,6 +113,8 @@ function* watchGenerateRulesActionSuccess() {
   while(true) {
     yield take(actions.GENERATE_RULESET.SUCCESS);
 
+    yield call(delay, 1000);
+
     // Force reload the index of items - triggers grid to reload
     yield fork(loadRulesets, undefined, true);
   }
