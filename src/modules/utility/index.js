@@ -1,12 +1,9 @@
 // Utility API module
 import { combineReducers } from 'redux';
-import { take, put, fork } from 'redux-saga/effects';
-import { call } from 'redux-saga/effects';
-
+import { take, call, fork } from 'redux-saga/effects';
 import { loadTaggedArtwork } from './api';
 import { createRequestTypes } from '../../redux/actions';
 import { fetchEntity } from '../../redux/sagas';
-import { action as actionCreator } from '../../redux/actions'; // TODO: No * Import
 import { async_call_mapper } from '../../redux/actions';
 
 
@@ -22,15 +19,11 @@ const INIT_LOAD_TAGGED_ART = 'INIT_LOAD_TAGGED_ART';
 /*
 Section 2: Redux Reducers
 */
-function taggedArtworkReducer(state = {}, action) {
-  console.log(action);
-
+function taggedArtworkReducer(state = {index:[]}, action) {
   // Note: elastic search doesn't return a fail state if the id does not exist
   switch(action.type) {
     case LOAD_TAGGED_ART.SUCCESS: {
-        console.log('!?!?!??!?!?!');
-        console.log(action);
-      return Object.assign({}, action.response.results, {});
+      return Object.assign({}, {index: action.response.results});
     }
     default:
       return state;
@@ -42,14 +35,11 @@ Section 3: Sagas
 */
 
 // Bind async api fetchers
-export const fetchArtworkItem    = fetchEntity.bind(null, async_call_mapper(LOAD_TAGGED_ART), loadTaggedArtwork)
+export const fetchArtworkItem = fetchEntity.bind(null, async_call_mapper(LOAD_TAGGED_ART), loadTaggedArtwork)
 
 // Load Load a page of users - note: page size is staticly defined in pref_service_client
 function* loadArtworkItem(artwork_id) {
-  //const loaded = yield select(jive, 'auth_users', 'all', next_cursor, force_refresh)
-  //if (!loaded) {
-    yield call(fetchArtworkItem, {artwork_id});
-  //}
+  yield call(fetchArtworkItem, {artwork_id});
 }
 
 
@@ -60,15 +50,6 @@ function* watchInitLoadTaggedArtwork() {
     yield fork(loadArtworkItem, artwork_id);
   }
 }
-
-function* watchLoadTaggedArtworkSuccess() {
-  // We may not need this...
-  while(true) {
-    const stuff = yield take(LOAD_TAGGED_ART.SUCCESS);
-    console.log(stuff);
-  }
-}
-
 
 
 /*
@@ -89,7 +70,6 @@ const reducers = combineReducers({
 // Sagas - import { sagas as miacollectionsSagas } from '../miacollections';
 const sagas = [
   fork(watchInitLoadTaggedArtwork),
-  fork(watchLoadTaggedArtworkSuccess),
 ];
 
 export { actions, reducers, sagas }

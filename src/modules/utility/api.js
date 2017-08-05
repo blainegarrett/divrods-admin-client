@@ -24,7 +24,7 @@ function callApi(endpoint, params, data, method) {
 
   // Determine headers
   let options = {method: method};
-  options['headers'] = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+  //options['headers'] = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
   // Handle Body/Payload - Note: GET, HEAD, DELETE do not accept payloads
   if (method !== 'GET')
@@ -33,8 +33,6 @@ function callApi(endpoint, params, data, method) {
   // Make request and call appropriate callbacks
   return fetch(fullUrl, options)
     .then(response => {
-      console.log(fullUrl);
-      console.log(response);
       return response.json().then(json => ({ json, response }))
     }
     ).then(({ json, response }) => {

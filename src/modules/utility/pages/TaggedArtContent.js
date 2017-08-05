@@ -21,10 +21,7 @@ class TaggedArtContent extends Component {
 
 
 function mapStateToProps(state) {
-  //const { pagination: { prefs }, } = state;
-
-  console.log(state);
-  let entities = [];
+  let entities = state.utilityService.taggedArtwork.index;
   return {entities};
 }
 
