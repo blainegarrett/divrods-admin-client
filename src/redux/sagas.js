@@ -1,5 +1,8 @@
 /* eslint-disable no-constant-condition */
 import { take, put, call, fork, select, all } from 'redux-saga/effects';
+
+import { delay } from 'redux-saga';
+
 import { pref_service_client } from '../services';
 import * as actions from './actions';
 
@@ -27,12 +30,12 @@ export function* fetchEntity(asyncActionMap, apiFn, ...args) {
 }
 
 // Bind Generators - TODO: Document the crap out of this
-export const fetchPrefs        = fetchEntity.bind(null, actions.async_call_mapper(actions.PREFS), pref_service_client.fetchPrefs)
-export const fetchRulesets     = fetchEntity.bind(null, actions.async_call_mapper(actions.RULESETS), pref_service_client.fetchRulesets)
-export const fetchRulesetRules = fetchEntity.bind(null, actions.async_call_mapper(actions.RULES), pref_service_client.fetchRulesetRules)
+export const fetchPrefs        = fetchEntity.bind(null, actions.async_call_mapper(actions.PREFS), pref_service_client.fetchPrefs);
+export const fetchRulesets     = fetchEntity.bind(null, actions.async_call_mapper(actions.RULESETS), pref_service_client.fetchRulesets);
+export const fetchRulesetRules = fetchEntity.bind(null, actions.async_call_mapper(actions.RULES), pref_service_client.fetchRulesetRules);
 
-
-export const generateRuleset   = fetchEntity.bind(null, actions.async_call_mapper(actions.GENERATE_RULESET), pref_service_client.generateRuleset)
+export const generateRuleset   = fetchEntity.bind(null, actions.async_call_mapper(actions.GENERATE_RULESET), pref_service_client.generateRuleset);
+export const makeRulesetDefault = fetchEntity.bind(null, actions.async_call_mapper(actions.MAKE_RULESET_DEFAULT), pref_service_client.setRulesetDefault);
 
 export function jive(state, index_name, index_subname, next_cursor, force_refresh=false) {
   // TODO: This works for pagination, but not for individual entities...
@@ -115,6 +118,27 @@ function* watchGenerateRulesActionSuccess() {
   }
 }
 
+function* watchInitiateMakeRulesetDefaultAction() {
+  while(true) {
+    // Form params..
+    const {ruleset_resource_id} = yield take(actions.INITIATE_MAKE_RULESET_DEFAULT);
+    yield fork(makeRulesetDefault, {ruleset_resource_id});
+  }
+}
+
+
+function* watchMakeRulesetDefaultSuccess() {
+  while(true) {
+    // Once succes response, wait 1 second, reload the data, and close the form
+    const action = yield take(actions.MAKE_RULESET_DEFAULT.SUCCESS);
+    yield call(delay, 1000);
+    yield fork(loadRulesets, undefined, true);
+    yield put(actions.action('RESETFORMSTATE', {formstateId: action.ruleset_resource_id})); // GIANT TERRIBLE HACK
+  }
+}
+
+
+
 export default function* root() {
   yield all([
     ...xauthSagas,
@@ -123,5 +147,7 @@ export default function* root() {
     fork(watchLoadPrefsPage),
     fork(watchLoadRulesetsPage),
     fork(watchLoadRulesetRulesPage),
+    fork(watchInitiateMakeRulesetDefaultAction),
+    fork(watchMakeRulesetDefaultSuccess)
   ])
 }

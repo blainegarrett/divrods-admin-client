@@ -43,6 +43,10 @@ export const LOAD_RULES_PAGE = 'LOAD_RULES_PAGE';
 export const INITIATE_GENERATE_RULES = 'INITIATE_GENERATE_RULES';
 export const GENERATE_RULESET = createRequestTypes('GENERATE_RULESET')
 
+export const INITIATE_MAKE_RULESET_DEFAULT = 'INITIATE_MAKE_RULESET_DEFAULT';
+export const MAKE_RULESET_DEFAULT = createRequestTypes('MAKE_RULESET_DEFAULT')
+
+
 // Move to XAUTH
 export const USER = createRequestTypes('USER')
 export const user = {

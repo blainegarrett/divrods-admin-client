@@ -122,6 +122,10 @@ export function generateRuleset({min_support, min_confidence, make_default}) {
   return callApi('/api/rest/v1.0/rulesets', {min_support, min_confidence, make_default, verbose:true}, {}, 'POST')
 }
 
+export function setRulesetDefault({ruleset_resource_id}) {
+  return callApi('/api/rest/v1.0/rulesets/' + ruleset_resource_id, {verbose:true}, {}, 'PUT')
+}
+
 export function createUser({username, first_name, last_name, email}) {
   return callApi('/api/auth/users', {verbose:true}, {username, first_name, last_name, email}, 'POST')
 }

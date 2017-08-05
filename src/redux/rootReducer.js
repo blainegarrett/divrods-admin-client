@@ -36,6 +36,34 @@ function entities(state = {}, action) {
   return state
 }
 
+
+function makeRulesetDefaultFormState(state={index:{}}, action) {
+  switch(action.type) {
+    case 'INITFORMSTATE': {
+      const updatedFormState =  { async_success: false, error_message: '', showDialog: true};
+      const updatedFormStates = Object.assign({}, state.index, {[action.formstateId]: updatedFormState});
+      return Object.assign({}, state, {index: updatedFormStates});
+    }
+    case 'RESETFORMSTATE': {
+      const updatedFormState = {async_success: false, error_message: '', showDialog: false };
+      const updatedFormStates = Object.assign({}, state.index, {[action.formstateId]: updatedFormState});
+      return Object.assign({}, state, {index: updatedFormStates});
+    }
+    case ActionTypes.MAKE_RULESET_DEFAULT.SUCCESS: {
+      const updatedFormState = { async_success: true, error_message: '', showDialog: false }
+      const updatedFormStates = Object.assign({}, state.index, {[action.formstateId]: updatedFormState});
+      return Object.assign({}, state, {index: updatedFormStates});
+    } case ActionTypes.MAKE_RULESET_DEFAULT.FAILURE: {
+      const updatedFormState = { async_success: false, error_message: action.error, showDialog: true }
+      const updatedFormStates = Object.assign({}, state.index, {[action.formstateId]: updatedFormState});
+      return Object.assign({}, state, {index: updatedFormStates});
+    } default: {
+      return state
+    }
+  }
+}
+
+
 // Updates the pagination data for different actions.
 const pagination = combineReducers({
   prefs: paginate({
@@ -80,6 +108,7 @@ export default combineReducers({
   auth: authStateReducer,
   createUserFormState,
   changePasswordFormState,
+  makeRulesetDefaultFormState
 });
 
 
