@@ -8,6 +8,7 @@ import * as actions from './actions';
 
 import xauthSagas from '../xauth/sagas';
 import { sagas as miacollectionsSagas } from '../modules/miacollections';
+import { sagas as utilityServiceSagas } from '../modules/utility';
 
 /***************************** Subroutines ************************************/
 
@@ -147,6 +148,7 @@ export default function* root() {
   yield all([
     ...xauthSagas,
     ...miacollectionsSagas,
+    ...utilityServiceSagas,
     fork(watchInitiateGenerateRulesAction),
     fork(watchGenerateRulesActionSuccess),
     fork(watchLoadPrefsPage),

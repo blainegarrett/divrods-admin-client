@@ -21,7 +21,6 @@ ListItemRouteLinkThing.propTypes = {
   caption: PropTypes.string
 };
 
-
 const ListItemRouteLink = withRouter(ListItemRouteLinkThing);
 
 export default class MainMenu extends Component {
@@ -32,7 +31,10 @@ export default class MainMenu extends Component {
         <div style={{ flex: 1, overflowY: 'auto', padding: '4.0rem 0rem' }}>
           <List selectable ripple>
             <ListDivider />
-            <ListSubHeader caption='Preference Engine' />
+            <ListSubHeader caption='Utility Service' />
+            <ListDivider />
+            <ListItemRouteLink url='/taggedart' leftIcon='label' caption='Tagged Artwork' />
+            <ListSubHeader caption='Preference Service' />
             <ListDivider />
 
             <ListItemRouteLink url='/preferences' leftIcon='thumbs_up_down' caption='Preference Data' />

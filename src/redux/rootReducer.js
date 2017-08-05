@@ -3,6 +3,7 @@ import paginate from './reducers/paginate';
 import { combineReducers } from 'redux';
 import layoutReducers from './layout/reducers';
 import { reducers as miacollectionsReducers } from '../modules/miacollections';
+import { reducers as utilityServiceReducers } from '../modules/utility';
 import { authStateReducer, createUserFormState, changePasswordFormState } from '../xauth/reducers';
 import { routerReducer } from 'react-router-redux';
 import { USERS } from '../xauth/actions';
@@ -108,6 +109,7 @@ export default combineReducers({
   layout: layoutReducers,
   auth: authStateReducer,
   miacollections: miacollectionsReducers,
+  utilityService: utilityServiceReducers,
   createUserFormState,
   changePasswordFormState,
   makeRulesetDefaultFormState
