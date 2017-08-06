@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { loginRequired } from '../../xauth/decorators';
 
-
 class NotFoundPage extends Component {
   render() {
     return (
@@ -12,7 +11,6 @@ class NotFoundPage extends Component {
     );
   }
 }
-
 
 export default loginRequired('admin')(NotFoundPage);
 NotFoundPage.propTypes = { }
