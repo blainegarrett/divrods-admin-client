@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 import Layout from 'react-toolbox/lib/layout/Layout';
 import Panel from 'react-toolbox/lib/layout/Panel';
@@ -66,10 +67,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App));
 
 App.propTypes = {
   authState: PropTypes.object,
