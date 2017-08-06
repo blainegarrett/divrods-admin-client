@@ -9,6 +9,7 @@ import HeaderNav from '../components/layout/HeaderNav';
 import MainMenu from '../components/layout/MainMenu';
 
 import { layoutToggleMenu, LAYOUT_CLOSE_SIDE } from '../redux/layout/actions';
+import { navigate, updateRouterState } from '../redux/actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -16,6 +17,23 @@ import IconButton from 'react-toolbox/lib/button/IconButton';
 import { logoutUser } from '../xauth/actions';
 
 class App extends Component {
+  /*
+  componentWillMount() {
+    console.log(this.props);
+    this.props.updateRouterState({
+      pathname: this.props.router.location.pathname,
+      params  : this.props.params
+    })
+  }
+  componentWillReceiveProps(nextProps) {
+    if(this.props.router.location.pathname !== nextProps.router.location.pathname)
+      this.props.updateRouterState({
+        pathname: nextProps.router.location.pathname,
+        params  : nextProps.router.params
+      })
+  }
+  */
+
     toggleDrawerActive = () => {
         this.props.layoutToggleMenu()
     };
@@ -56,13 +74,15 @@ class App extends Component {
 
 function mapStateToProps(state) {
   const { layout, auth } = state;
-  return {layoutState: layout, authState: auth };
+  return {layoutState: layout, authState: auth, router: state.router};
 }
 function mapDispatchToProps(dispatch) {
   return {
     layoutToggleMenu: bindActionCreators(layoutToggleMenu, dispatch),
     logoutUser: bindActionCreators(logoutUser, dispatch),
     closeSidebar: bindActionCreators(() => ({type: LAYOUT_CLOSE_SIDE }), dispatch),
+    navigate,
+    updateRouterState
   };
 }
 

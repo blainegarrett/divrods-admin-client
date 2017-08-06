@@ -14,7 +14,7 @@ function makeQueryString(params) {
   return ''
 }
 
-function callApi(endpoint, params, data, method, skip_auth_header=false) {
+function callApi(endpoint, params, data, method) {
   //const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
   // Resolve the url

@@ -1,7 +1,8 @@
 /* eslint-disable no-constant-condition */
 import { take, put, call, fork, select, all } from 'redux-saga/effects';
-
 import { delay } from 'redux-saga';
+
+import { push } from 'react-router-redux';
 
 import { pref_service_client } from '../services';
 import * as actions from './actions';
@@ -74,12 +75,15 @@ function* loadRulesetRules(ruleset_id, next_cursor, force_refresh=false) {
   }
 }
 
-
-
-
 /******************************************************************************/
 /******************************* WATCHERS *************************************/
 /******************************************************************************/
+function* watchNavigate() {
+  while(true) {
+    const {pathname} = yield take(actions.NAVIGATE)
+    yield put(push(pathname));
+  }
+}
 
 function* watchLoadPrefsPage() {
   while(true) {
@@ -149,6 +153,7 @@ export default function* root() {
     ...xauthSagas,
     ...miacollectionsSagas,
     ...utilityServiceSagas,
+    fork(watchNavigate),
     fork(watchInitiateGenerateRulesAction),
     fork(watchGenerateRulesActionSuccess),
     fork(watchLoadPrefsPage),
