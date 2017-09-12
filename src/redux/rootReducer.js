@@ -16,6 +16,8 @@ import { USERS } from '../xauth/actions';
 function entities(state = {}, action) {
   // TODO: This only works for our style of api...
 
+  console.log(action);
+
   if (action.type && action.type.indexOf('SUCCESS') !== -1) { // is a list
     var resources = action.response.results;
     if(!Array.isArray(resources)){

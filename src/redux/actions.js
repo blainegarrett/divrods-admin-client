@@ -16,6 +16,13 @@ export function action(type, payload = {}) {
   return {type, ...payload}
 }
 
+// Utility and Navigation
+export const UPDATE_ROUTER_STATE = 'UPDATE_ROUTER_STATE';
+export const NAVIGATE =  'NAVIGATE';
+export const updateRouterState = state => action(UPDATE_ROUTER_STATE, {state})
+export const navigate = pathname => action(NAVIGATE, {pathname})
+
+
 
 // ASYNC Actions
 export const PREFS = createRequestTypes('PREFS');
