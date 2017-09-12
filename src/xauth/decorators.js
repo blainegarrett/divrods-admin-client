@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Login from './Login';
 import { loginUser } from './actions';
+import styles from './Login.css';
 
 export function loginRequired(level) {
   return function(PageComponent) {
@@ -14,13 +15,15 @@ export function loginRequired(level) {
 
         const showLogin = !isAuthenticated;
 
+        console.log(styles.good);
+
         // TODO: Also check level
         if (showLogin) {
           // TODO: Tell react router redirect to login page
           // TODO: Somehow inform the server to fire off a 401, 403, etc
           return (
             <div>
-              <h1>Authentication Required</h1>
+              <h1 className="good">Authentication Required</h1>
 
               <Login
                 errorMessage={errorMessage}

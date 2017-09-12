@@ -8,9 +8,10 @@ import ThemeProvider from 'react-toolbox/lib/ThemeProvider';
 //import registerServiceWorker from './registerServiceWorker';
 import App from './containers/App';
 
-import theme from './assets/react-toolbox/theme'
+import theme from './assets/react-toolbox/theme';
 import './index.css';
 import './assets/react-toolbox/theme.css';
+import './assets/style.css';
 
 // Page Routes
 import Routes from './Routes';

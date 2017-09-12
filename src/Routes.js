@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import {AuthUsersIndexPage} from './xauth/pages';
 import NotFoundPage from './components/pages/NotFoundPage';
+import PlaygroundIndexPage from './components/pages/PlaygroundIndexPage';
 import SettingsEnvironmentPage from './components/pages/SettingsEnvironmentPage';
 
 import {SessionsIndexPage} from './modules/sessions';
@@ -29,6 +30,7 @@ export default class App extends Component {
         <Route exact path="/sessions" component={SessionsIndexPage} />
         <Route exact path="/auth/users" component={AuthUsersIndexPage} />
         <Route exact path="/settings/environment" component={SettingsEnvironmentPage} />
+        <Route exact path="/playground" component={ PlaygroundIndexPage } />
         <Route component={NotFoundPage}/>
       </Switch>
     );

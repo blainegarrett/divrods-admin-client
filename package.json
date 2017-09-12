@@ -5,6 +5,7 @@
   "dependencies": {
     "dotenv": "^4.0.0",
     "lodash": "^4.17.4",
+    "node-sass-chokidar": "0.0.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
@@ -17,6 +18,18 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "autoprefixer": "^7.1.2",
+    "postcss": "^6.0.8",
+    "postcss-apply": "^0.8.0",
+    "postcss-browser-reporter": "^0.5.0",
+    "postcss-cli": "^4.1.0",
+    "postcss-css-variables": "^0.7.0",
+    "postcss-cssnext": "^3.0.2",
+    "postcss-import": "^10.0.0",
+    "postcss-modules": "^0.8.0",
+    "postcss-modules-resolve-path": "^1.0.0",
+    "postcss-reporter": "^5.0.0",
+    "postcss-url": "^7.1.1",
     "react-scripts": "1.0.7",
     "react-toolbox-themr": "^1.0.2"
   },
@@ -25,7 +38,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "toolbox": "react-toolbox-themr"
+    "toolbox": "react-toolbox-themr",
+    "sass": "node-sass src/style.scss src/assets/style.css -w src/style.scss",
+    "postcssx": "postcss src/style.scss -w -o src/assets/style.css -u postcss-cssnext",
+    "postcss": "postcss src/**/*.css --dir src/assets -w -o src/assets/style.css --use postcss-import postcss-url postcss-cssnext postcss-browser-reporter postcss-reporter postcss-css-variables postcss-apply"
   },
   "reactToolbox": {
     "customProperties": {
