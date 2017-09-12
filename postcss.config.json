@@ -1,0 +1,18 @@
+{
+  "input": "src/style.css",
+  "output": "src/assets/style.css",
+  "local-plugins": true,
+  "watch": true,
+  "use": [
+    "autoprefixer",
+    "postcss-import",
+    "postcss-url",
+    "postcss-cssnext",
+    "postcss-browser-reporter",
+    "postcss-reporter",
+    "postcss-css-variables",
+    //"postcss-modules-resolve-path",
+    //"postcss-modules",
+    "postcss-apply"
+  ]
+}
