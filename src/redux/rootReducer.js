@@ -4,10 +4,12 @@ import { combineReducers } from 'redux';
 import layoutReducers from './layout/reducers';
 import { reducers as miacollectionsReducers } from '../modules/miacollections';
 import { reducers as utilityServiceReducers } from '../modules/utility';
+import { reducers as surveyReducers } from '../modules/survey/redux';
 import { authStateReducer, createUserFormState, changePasswordFormState } from '../xauth/reducers';
 import { routerReducer } from 'react-router-redux';
 import { USERS } from '../xauth/actions';
-
+import { actions as item_actions} from '../modules/items/redux';
+import { actions as session_actions} from '../modules/sessions/redux';
 
 // This is a simple entty cache that supports data like {resource_id: guid, ...}
 // Currently, don't check it, but this should be the source of "truth" for an entity
@@ -15,8 +17,6 @@ import { USERS } from '../xauth/actions';
 
 function entities(state = {}, action) {
   // TODO: This only works for our style of api...
-
-  console.log(action);
 
   if (action.type && action.type.indexOf('SUCCESS') !== -1) { // is a list
     var resources = action.response.results;
@@ -94,6 +94,34 @@ const pagination = combineReducers({
       ActionTypes.RULES.FAILURE
     ]
   }),
+
+  pref_items: paginate({
+    mapActionToKey: () => 'all',
+    types: [
+      item_actions.PREF_ITEMS.REQUEST,
+      item_actions.PREF_ITEMS.SUCCESS,
+      item_actions.PREF_ITEMS.FAILURE
+    ]
+  }),
+
+  explicit_pref_items: paginate({
+    mapActionToKey: () => 'all',
+    types: [
+      item_actions.EXPLICIT_PREF_ITEMS.REQUEST,
+      item_actions.EXPLICIT_PREF_ITEMS.SUCCESS,
+      item_actions.EXPLICIT_PREF_ITEMS.FAILURE
+    ]
+  }),
+
+  pref_sessions: paginate({
+    mapActionToKey: () => 'all',
+    types: [
+      session_actions.PREF_SESSIONS.REQUEST,
+      session_actions.PREF_SESSIONS.SUCCESS,
+      session_actions.PREF_SESSIONS.FAILURE
+    ]
+  }),
+
   auth_users: paginate({
     mapActionToKey: () => 'all',
     types: [
@@ -112,11 +140,11 @@ export default combineReducers({
   auth: authStateReducer,
   miacollections: miacollectionsReducers,
   utilityService: utilityServiceReducers,
+  surveyReducers: surveyReducers,
   createUserFormState,
   changePasswordFormState,
   makeRulesetDefaultFormState
 });
-
 
 /*
 const history = createHistory()

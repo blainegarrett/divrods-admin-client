@@ -114,6 +114,16 @@ export function fetchRulesetRules({ruleset_id, next_cursor = ''}) {
   return callApi('/api/rest/v1.0/recommendations', {ruleset_id: ruleset_id, cursor: cleanCursor(next_cursor), verbose:true, limit:50}, {}, 'GET');
 }
 
+
+export function fetchItems({next_cursor = ''}) {
+  return callApi('/api/rest/v1.0/items', {cursor: cleanCursor(next_cursor), verbose:true, limit:50}, {}, 'GET');
+}
+
+export function fetchSessions({next_cursor = ''}) {
+  return callApi('/api/rest/v1.0/transactions', {cursor: cleanCursor(next_cursor), verbose:true, limit:50}, {}, 'GET');
+}
+
+
 export function fetchUsers({next_cursor = ''}) {
   return callApi('/api/auth/users', {cursor: cleanCursor(next_cursor), verbose:true, limit:50}, {}, 'GET');
 }
@@ -136,4 +146,13 @@ export function setPassword({user_resource_id, password}) {
 
 export function changePassword({user_resource_id, password}) {
   return callApi('/api/auth/users/' + user_resource_id + '/logins/password', {verbose:true}, {'auth_data': password, 'auth_type': 'basic', 'auth_key': 'ignored'}, 'PUT')
+}
+
+export function fetchItemsByIdList({item_ids}){
+  let item_ids_str = item_ids.join(',');
+  return callApi('/api/rest/v1.0/items', {item_ids: item_ids_str}, {}, 'GET');
+}
+
+export function putPreference({item_id, user_id, pref}) {
+  return callApi('/api/rest/v1.0/preferences', {verbose:true}, [{item_id, user_id, pref}], 'POST');
 }

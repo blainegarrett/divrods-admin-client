@@ -8,9 +8,11 @@ import { pref_service_client } from '../services';
 import * as actions from './actions';
 
 import xauthSagas from '../xauth/sagas';
+import { sagas as itemSagas } from '../modules/items/redux';
+import { sagas as sessionSagas } from '../modules/sessions/redux';
 import { sagas as miacollectionsSagas } from '../modules/miacollections';
 import { sagas as utilityServiceSagas } from '../modules/utility';
-
+import { sagas as surveySagas} from '../modules/survey/redux';
 /***************************** Subroutines ************************************/
 
 // resuable fetch Subroutine
@@ -39,6 +41,8 @@ export const fetchRulesetRules = fetchEntity.bind(null, actions.async_call_mappe
 
 export const generateRuleset   = fetchEntity.bind(null, actions.async_call_mapper(actions.GENERATE_RULESET), pref_service_client.generateRuleset);
 export const makeRulesetDefault = fetchEntity.bind(null, actions.async_call_mapper(actions.MAKE_RULESET_DEFAULT), pref_service_client.setRulesetDefault);
+
+export const putPreference = fetchEntity.bind(null, actions.async_call_mapper(actions.PUT_PREFERENCE), pref_service_client.putPreference);
 
 export function jive(state, index_name, index_subname, next_cursor, force_refresh=false) {
   // TODO: This works for pagination, but not for individual entities...
@@ -145,7 +149,14 @@ function* watchMakeRulesetDefaultSuccess() {
   }
 }
 
-
+function* watchInitiatePutPreferenceAction() {
+  /** Trigger api call to record a preference
+  */
+  while(true) {
+    const {user_id, item_id, pref} = yield take(actions.INITIATE_PUT_PREFERENCE);
+    yield fork(putPreference, {user_id, item_id, pref});
+  }
+}
 
 
 export default function* root() {
@@ -153,6 +164,9 @@ export default function* root() {
     ...xauthSagas,
     ...miacollectionsSagas,
     ...utilityServiceSagas,
+    ...itemSagas,
+    ...sessionSagas,
+    ...surveySagas,
     fork(watchNavigate),
     fork(watchInitiateGenerateRulesAction),
     fork(watchGenerateRulesActionSuccess),
@@ -161,5 +175,6 @@ export default function* root() {
     fork(watchLoadRulesetRulesPage),
     fork(watchInitiateMakeRulesetDefaultAction),
     fork(watchMakeRulesetDefaultSuccess),
+    fork(watchInitiatePutPreferenceAction),
   ])
 }

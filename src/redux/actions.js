@@ -53,6 +53,8 @@ export const GENERATE_RULESET = createRequestTypes('GENERATE_RULESET')
 export const INITIATE_MAKE_RULESET_DEFAULT = 'INITIATE_MAKE_RULESET_DEFAULT';
 export const MAKE_RULESET_DEFAULT = createRequestTypes('MAKE_RULESET_DEFAULT')
 
+export const INITIATE_PUT_PREFERENCE = 'INITIATE_PUT_PREFERENCE'
+export const PUT_PREFERENCE = createRequestTypes('PUT_PREFERENCE')
 
 // Move to XAUTH
 export const USER = createRequestTypes('USER')

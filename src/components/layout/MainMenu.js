@@ -45,7 +45,6 @@ _ListItemRouteLinkThing.propTypes = {
   caption: PropTypes.string
 };
 
-
 const ListItemRouteLink = withRouter(ListItemRouteLinkThing);
 
 export default class MainMenu extends Component {
@@ -59,9 +58,9 @@ export default class MainMenu extends Component {
             <ListSubHeader caption='Utility Service' />
             <ListDivider />
             <ListItemRouteLink url='/taggedart' leftIcon='label' caption='Tagged Artwork' />
+             <ListItemRouteLink url='/survey' leftIcon='loyalty' caption='Tagged Art Survey' />
             <ListSubHeader caption='Preference Service' />
             <ListDivider />
-
             <ListItemRouteLink url='/preferences' leftIcon='thumbs_up_down' caption='Preference Data' />
             <ListItemRouteLink url='/rulesets' leftIcon='device_hub' caption='Rulesets' />
             <ListItemRouteLink url='/sessions' leftIcon='directions_walk' caption='Sessions'/>

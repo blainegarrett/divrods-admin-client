@@ -11,6 +11,7 @@ import {SessionsIndexPage} from './modules/sessions';
 import {RulesetsIndexPage} from './modules/rulesets';
 import {RulesetsRulesIndexPage} from './modules/ruleset_rules';
 import {ItemsIndexPage} from './modules/items';
+import {SurveyIndexPage} from './modules/survey';
 import {PreferencesIndexPage} from './modules/preferences';
 import {DashboardIndexPage} from './modules/dashboard';
 import {TaggedArtIndexPage} from './modules/utility/pages'
@@ -27,6 +28,7 @@ export default class App extends Component {
         <Route exact path="/preferences" component={PreferencesIndexPage} />
         <Route exact path="/items" component={ItemsIndexPage} />
         <Route exact path="/sessions" component={SessionsIndexPage} />
+        <Route exact path="/survey" component={SurveyIndexPage} />
         <Route exact path="/auth/users" component={AuthUsersIndexPage} />
         <Route exact path="/settings/environment" component={SettingsEnvironmentPage} />
         <Route component={NotFoundPage}/>

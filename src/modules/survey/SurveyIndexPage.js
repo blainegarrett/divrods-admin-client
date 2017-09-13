@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { loginRequired } from '../../xauth/decorators';
-import SessionsContent from './SessionsContent';
+import SurveyContent from './SurveyContent';
 
 class SessionsIndexPage extends Component {
     render() {
         return (
-            <div><h2>Sessions</h2><SessionsContent /></div>
+            <div><h2>Survey</h2><SurveyContent /></div>
         );
     }
 }
