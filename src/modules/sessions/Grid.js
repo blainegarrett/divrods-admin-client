@@ -23,12 +23,8 @@ function format_items(item_list) {
   });
 }
 
-
 export default class Grid extends Component {
   render() {
-
-    console.log(this.props.entities);
-
     return (
       <Table selectable={false} style={{ marginTop: 10 }}>
           <TableHead>

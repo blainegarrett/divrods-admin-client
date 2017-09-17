@@ -8,12 +8,13 @@ import ListDivider from 'react-toolbox/lib/list/ListDivider';
 import NavDrawer from 'react-toolbox/lib/layout/NavDrawer';
 import { REACT_APP_ADMIN_CLIENT_VERSION } from '../../constants';
 import { withRouter } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { navigate } from '../../redux/actions';
+//import { bindActionCreators } from 'redux';
+//import { connect } from 'react-redux';
+//import { navigate } from '../../redux/actions';
 
 // ["sm","smTablet","md","lg","lgTablet","xl","xxl","xxxl"]
 
+/*
 const _ListItemRouteLinkThing = ({ url, leftIcon, caption, boundNavigate }) => (
   <ListItem onClick={() => {
     return boundNavigate(url);
@@ -35,17 +36,26 @@ function mapDispatchToProps(dispatch) {
 }
 
 const ListItemRouteLinkThing = connect(mapStateToProps, mapDispatchToProps)(_ListItemRouteLinkThing);
-
-
-
 _ListItemRouteLinkThing.propTypes = {
   history: PropTypes.object,
   url: PropTypes.string,
   leftIcon: PropTypes.node,
   caption: PropTypes.string
 };
+*/
 
+
+const ListItemRouteLinkThing = ({ history, url, leftIcon, caption }) => (
+  <ListItem onClick={() => history.push(url)} caption={caption} leftIcon={leftIcon} />
+);
+ListItemRouteLinkThing.propTypes = {
+  history: PropTypes.object,
+  url: PropTypes.string,
+  leftIcon: PropTypes.node,
+  caption: PropTypes.string
+};
 const ListItemRouteLink = withRouter(ListItemRouteLinkThing);
+
 
 export default class MainMenu extends Component {
   render() {
